@@ -1,0 +1,153 @@
+import 'package:ders_app/models/register_request.dart';
+import 'package:ders_app/models/user.dart';
+import 'package:ders_app/models/login_request.dart';
+import 'package:ders_app/services/api_service.dart';
+import 'package:ders_app/services/storage_service.dart';
+import 'package:get/get.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+
+class AuthService extends GetxService {
+  late final StorageService _storageService;
+  late final ApiService _apiService;
+
+  Rx<User?> currentUser = Rx<User?>(null);
+
+  Future<AuthService> init() async {
+    _storageService = Get.find<StorageService>();
+    _apiService = Get.find<ApiService>();
+    return this;
+  }
+
+  Future<bool> refreshToken() async {
+    try {
+      final refreshToken = _storageService.getValue<String>(
+        StorageKeys.refreshToken,
+      );
+
+      final response = await _apiService.post(
+        ApiConstants.refreshToken,
+        data: {"refreshToken": refreshToken},
+      );
+
+      if (response.statusCode == 200) {
+        String token = response.data["accessToken"];
+        String refreshToken = response.data["refreshToken"];
+
+        clearTokenAndRefreshToken();
+
+        await _storageService.setValue<String>(StorageKeys.token, token);
+        await _storageService.setValue(StorageKeys.refreshToken, refreshToken);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      throw Exception("Refresh token sırasında bir hata oluştu $e");
+    }
+  }
+
+  Future<User?> login(LoginRequest data) async {
+    try {
+      final response = await _apiService.post(ApiConstants.login, data: data);
+      if (response.statusCode == 200) {
+        String token = response.data["accessToken"];
+        String refreshToken = response.data["refreshToken"];
+
+        await _storageService.setValue(StorageKeys.token, token);
+        await _storageService.setValue(StorageKeys.refreshToken, refreshToken);
+
+        int userId = _getIdFromToken();
+
+        final giris = await _apiService.get(
+          ApiConstants.getOgrenci + userId.toString(),
+        );
+        if (giris.statusCode == 200) {
+          User user = User.fromJson(giris.data);
+          currentUser.value = user;
+          return currentUser.value;
+        }
+      }
+    } catch (e) {
+      throw Exception("Giriş yapılırken bir sorun oluştu $e");
+    }
+  }
+
+  Future<bool> register(RegisterRequest request) async {
+    try {
+      final response = await _apiService.post(
+        ApiConstants.register,
+        data: request,
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print("Profil getirilirken bir hata oluştu $e");
+      return false;
+    }
+  }
+
+  Future<User?> getProfile() async {
+    try {
+      int userId = _getIdFromToken();
+      final response = await _apiService.get(
+        ApiConstants.getOgrenci + userId.toString(),
+      );
+      if (response.statusCode == 200) {
+        currentUser.value = User.fromJson(response.data);
+        return currentUser.value;
+      }
+      currentUser.value = null;
+      return null;
+    } catch (e) {
+      print("Profil getirilirken bir hata oluştu $e");
+      return null;
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _storageService.remove(StorageKeys.token);
+      await _storageService.remove(StorageKeys.refreshToken);
+    } catch (e) {
+      print("Çıkış yapılırken hata çıktı $e");
+    }
+  }
+
+  int _getIdFromToken() {
+    try {
+      final token = _storageService.getValue<String>(StorageKeys.token);
+      Map<String, dynamic> decodedToken = Jwt.parseJwt(token!);
+      int userId = decodedToken["id"];
+      return userId;
+    } catch (e) {
+      throw Exception("Tokenı çözümlerken hata çıktı $e");
+    }
+  }
+
+  Future<void> clearTokenAndRefreshToken() async {
+    await _storageService.remove(StorageKeys.token);
+    await _storageService.remove(StorageKeys.refreshToken);
+  }
+
+  Future<bool> isAuthenticated() async {
+    try {
+      final token = _storageService.getValue<String>(StorageKeys.token);
+      if (token == null) {
+        currentUser.value = null;
+        return false;
+      }
+
+      final response = await getProfile();
+      if (response != null) {
+        currentUser.value = response;
+        return true;
+      }
+      return false;
+    } catch (e) {
+      await clearTokenAndRefreshToken();
+      currentUser.value = null;
+      return false;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+import 'package:ders_app/modules/login/login_binding.dart';
+import 'package:ders_app/modules/login/login_page.dart';
+import 'package:ders_app/modules/splash/splash_binding.dart';
+import 'package:ders_app/modules/splash/splash_page.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+
+abstract class AppRoutes {
+  static const INITIAL = SPLASH;
+  static const SPLASH = "/splash";
+  static const LOGIN = "/login";
+  static const REGISTER = "/register";
+  static const HOME = "/home";
+  static const PROFILE = "/profile";
+}
+
+class AppPages {
+  static final pages = <GetPage>[
+    GetPage(
+      name: AppRoutes.SPLASH,
+      page: () => SplashPage(),
+      binding: SplashBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.LOGIN,
+      page: () => LoginPage(),
+      binding: LoginBinding(),
+    ),
+  ];
+}

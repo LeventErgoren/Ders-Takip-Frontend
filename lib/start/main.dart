@@ -1,0 +1,23 @@
+import 'package:ders_app/core/app_bindings.dart';
+import 'package:ders_app/modules/routes/app_pages.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+
+void main(List<String> args) {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: "Çalışma Süresi Takip Uygulaması",
+      initialBinding: AppBindings(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: AppRoutes.INITIAL,
+      getPages: AppPages.pages,
+    );
+  }
+}
