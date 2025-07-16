@@ -1,5 +1,9 @@
+import 'package:ders_app/modules/home/home_binding.dart';
+import 'package:ders_app/modules/home/home_page.dart';
 import 'package:ders_app/modules/login/login_binding.dart';
 import 'package:ders_app/modules/login/login_page.dart';
+import 'package:ders_app/modules/register/register_binding.dart';
+import 'package:ders_app/modules/register/register_page.dart';
 import 'package:ders_app/modules/splash/splash_binding.dart';
 import 'package:ders_app/modules/splash/splash_page.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -24,6 +28,16 @@ class AppPages {
       name: AppRoutes.LOGIN,
       page: () => LoginPage(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.REGISTER,
+      page: () => RegisterPage(),
+      binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.HOME,
+      page: () => HomePage(),
+      binding: HomeBinding(),
     ),
   ];
 }

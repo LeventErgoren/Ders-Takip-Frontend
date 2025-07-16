@@ -3,6 +3,7 @@ import 'package:ders_app/models/user.dart';
 import 'package:ders_app/models/login_request.dart';
 import 'package:ders_app/services/api_service.dart';
 import 'package:ders_app/services/storage_service.dart';
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
@@ -10,6 +11,8 @@ class AuthService extends GetxService {
   late final StorageService _storageService;
   late final ApiService _apiService;
 
+  final errorMessage = "".obs;
+  Rx<int> userId = Rx<int>(-1);
   Rx<User?> currentUser = Rx<User?>(null);
 
   Future<AuthService> init() async {
@@ -33,7 +36,7 @@ class AuthService extends GetxService {
         String token = response.data["accessToken"];
         String refreshToken = response.data["refreshToken"];
 
-        clearTokenAndRefreshToken();
+        await clearTokenAndRefreshToken();
 
         await _storageService.setValue<String>(StorageKeys.token, token);
         await _storageService.setValue(StorageKeys.refreshToken, refreshToken);
@@ -45,29 +48,32 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<User?> login(LoginRequest data) async {
+  Future<bool> login(LoginRequest data) async {
     try {
-      final response = await _apiService.post(ApiConstants.login, data: data);
+      final response = await _apiService.post(
+        ApiConstants.login,
+        data: data.toJson(),
+      );
       if (response.statusCode == 200) {
         String token = response.data["accessToken"];
         String refreshToken = response.data["refreshToken"];
 
+        await clearTokenAndRefreshToken();
+
         await _storageService.setValue(StorageKeys.token, token);
         await _storageService.setValue(StorageKeys.refreshToken, refreshToken);
 
-        int userId = _getIdFromToken();
-
-        final giris = await _apiService.get(
-          ApiConstants.getOgrenci + userId.toString(),
-        );
-        if (giris.statusCode == 200) {
-          User user = User.fromJson(giris.data);
-          currentUser.value = user;
-          return currentUser.value;
-        }
+        int idFromToken = _getIdFromToken();
+        userId.value = idFromToken;
+        errorMessage.value = "";
+        return true;
       }
+      return false;
+    } on DioException catch (e) {
+      errorMessage.value = e.response!.data["exception"];
+      return false;
     } catch (e) {
-      throw Exception("Giriş yapılırken bir sorun oluştu $e");
+      throw Exception("Giriş yapılırken bilinmeyen bir sorun oluştu $e");
     }
   }
 
@@ -75,14 +81,18 @@ class AuthService extends GetxService {
     try {
       final response = await _apiService.post(
         ApiConstants.register,
-        data: request,
+        data: request.toJson(),
       );
       if (response.statusCode == 200) {
+        errorMessage.value = "";
         return true;
       }
       return false;
+    } on DioException catch (e) {
+      errorMessage.value = e.response!.data["exception"];
+      return false;
     } catch (e) {
-      print("Profil getirilirken bir hata oluştu $e");
+      print("Profil getirilirken bilinmeyen bir hata oluştu $e");
       return false;
     }
   }

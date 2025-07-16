@@ -10,7 +10,8 @@ class SplashController extends BaseController {
   void onReady() async {
     super.onReady();
     await waitForServices();
-    await checkTokenAndRedirect();
+    // await checkTokenAndRedirect();
+    Get.offAllNamed(AppRoutes.LOGIN);
   }
 
   Future<void> waitForServices() async {
