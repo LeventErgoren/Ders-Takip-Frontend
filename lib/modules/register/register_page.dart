@@ -1,5 +1,6 @@
+import 'package:ders_app/modules/register/widgets/build_text_form_field.dart';
 import 'package:ders_app/modules/register/register_controller.dart';
-import 'package:ders_app/modules/routes/app_pages.dart';
+import 'package:ders_app/modules/register/widgets/giris_yap_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -34,8 +35,8 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                   const SizedBox(height: 28),
 
-                  _buildLabel("Ad", theme),
-                  _buildTextField(
+                  buildLabel("Ad", theme),
+                  buildTextField(
                     theme,
                     hint: "Adınız",
                     icon: Icons.person_outline,
@@ -44,8 +45,8 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                   const SizedBox(height: 18),
 
-                  _buildLabel("Soyad", theme),
-                  _buildTextField(
+                  buildLabel("Soyad", theme),
+                  buildTextField(
                     theme,
                     hint: "Soyadınız",
                     icon: Icons.person_outline,
@@ -54,8 +55,8 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                   const SizedBox(height: 18),
 
-                  _buildLabel("E-posta", theme),
-                  _buildTextField(
+                  buildLabel("E-posta", theme),
+                  buildTextField(
                     theme,
                     hint: "ornek@mail.com",
                     icon: Icons.email_outlined,
@@ -65,8 +66,8 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                   const SizedBox(height: 18),
 
-                  _buildLabel("Kullanıcı Adı", theme),
-                  _buildTextField(
+                  buildLabel("Kullanıcı Adı", theme),
+                  buildTextField(
                     theme,
                     hint: "kullanici123",
                     icon: Icons.account_circle_outlined,
@@ -75,8 +76,8 @@ class RegisterPage extends GetView<RegisterController> {
                   ),
                   const SizedBox(height: 18),
 
-                  _buildLabel("Şifre", theme),
-                  _buildTextField(
+                  buildLabel("Şifre", theme),
+                  buildTextField(
                     theme,
                     hint: "••••••••",
                     icon: Icons.lock_outline,
@@ -104,69 +105,12 @@ class RegisterPage extends GetView<RegisterController> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Zaten hesabın var mı?", style: theme.textTheme.bodyMedium),
-                      TextButton(
-                        onPressed: () {
-                          Get.offAllNamed(AppRoutes.LOGIN);
-                        },
-                        style: TextButton.styleFrom(
-                          foregroundColor: theme.colorScheme.secondary,
-                          textStyle: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        child: const Text("Giriş Yap"),
-                      ),
-                    ],
-                  ),
+                  GirisYapWidget(),
                 ],
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildLabel(String text, ThemeData theme) {
-    return Text(text, style: theme.textTheme.labelLarge);
-  }
-
-  Widget _buildTextField(
-    ThemeData theme, {
-    required String hint,
-    required IconData icon,
-    required void Function(String?) onSaved,
-    String? Function(String?)? validator,
-    bool obscure = false,
-    TextInputType inputType = TextInputType.text,
-  }) {
-    return TextFormField(
-      onSaved: onSaved,
-      validator: validator,
-      obscureText: obscure,
-      keyboardType: inputType,
-      style: TextStyle(color: theme.colorScheme.onSurface),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: theme.colorScheme.onSurface.withOpacity(0.6),
-        ),
-        prefixIcon: Icon(icon, color: theme.colorScheme.onSurface),
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: theme.colorScheme.primary.withOpacity(0.4),
-          ),
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: theme.colorScheme.primary.withOpacity(0.4),
-          ),
-        ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-        filled: false, // input içi şeffaf olacak
       ),
     );
   }

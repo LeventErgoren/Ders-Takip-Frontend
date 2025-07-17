@@ -91,18 +91,16 @@ class RegisterController extends BaseController {
       );
 
       if (await _service.register(kullanici)) {
-        Get.closeAllSnackbars();
         Get.offAllNamed(AppRoutes.LOGIN);
         showSuccess("Kayıt başarılı!");
       } else {
-        Get.closeAllSnackbars();
-
-        if (_service.errorMessage.value.contains(eposta.value))
+        print(_service.errorMessage.value);
+        if (_service.errorMessage.value.contains(eposta.value)) {
           showError("Bu e-posta zaten kullanılıyor!");
-        else if (_service.errorMessage.value.contains(kullaniciAdi.value))
+        } else if (_service.errorMessage.value.contains(kullaniciAdi.value))
           showError("Bu kullanıcı adı zaten kullanılıyor!");
-
-        showError("Kayıt başarısız!");
+        else
+          showError("Kayıt başarısız!");
       }
     }
   }

@@ -4,6 +4,7 @@ import 'package:ders_app/models/login_request.dart';
 import 'package:ders_app/services/api_service.dart';
 import 'package:ders_app/services/storage_service.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
@@ -62,6 +63,8 @@ class AuthService extends GetxService {
 
         await _storageService.setValue(StorageKeys.token, token);
         await _storageService.setValue(StorageKeys.refreshToken, refreshToken);
+
+        debugPrint(token);
 
         int idFromToken = _getIdFromToken();
         userId.value = idFromToken;
