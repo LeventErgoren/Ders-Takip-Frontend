@@ -3,6 +3,9 @@ import 'package:ders_app/models/calisma_suresi.dart';
 import 'package:ders_app/models/calisma_suresi_time.dart';
 import 'package:ders_app/repositories/calisma_suresi_repository.dart';
 import 'package:ders_app/services/auth_service.dart';
+import 'package:ders_app/themes/app_colors.dart';
+import 'package:fl_chart/src/chart/bar_chart/bar_chart_data.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/instance_manager.dart';
 
@@ -13,7 +16,7 @@ class StatisticsController extends BaseController {
   late CalismaSuresiRepository _calismaSuresiRepository;
   final toplamCalismaSuresi = 0.obs;
   final selectedView = 'Günlük'.obs;
-  
+
   @override
   void onInit() async {
     super.onInit();
@@ -91,4 +94,76 @@ class StatisticsController extends BaseController {
     }
   }
 
+  void selectedViewChanged(String? value) {
+    selectedView.value = value!;
+    switch (value) {
+      case 'Günlük':
+        bugunkuVeriler();
+        break;
+      case 'Haftalık':
+        buHaftaninVerileri();
+        break;
+      case 'Aylık':
+        buAyinVerileri();
+        break;
+      case 'Yıllık':
+        buYilinVerileri();
+        break;
+    }
+    ;
+  }
+
+  List<DropdownMenuItem<String>> getItems(BuildContext context) {
+    return ['Günlük', 'Haftalık', 'Aylık', 'Yıllık']
+        .map(
+          (view) => DropdownMenuItem(
+            value: view,
+            child: Text(view, style: Theme.of(context).textTheme.bodyMedium),
+          ),
+        )
+        .toList();
+  }
+
+  Widget getBottomTitle(double value, String view, bool isDarkMode) {
+    final textStyle = TextStyle(
+      color: isDarkMode
+          ? AppColors.textPrimaryDark
+          : AppColors.textSecondaryLight,
+      fontSize: 12,
+    );
+    if (view == 'Günlük') {
+      return Text('Bugün', style: textStyle);
+    } else if (view == 'Haftalık') {
+      const days = ['P', 'S', 'Ç', 'P', 'C', 'C', 'P'];
+      return Text(days[value.toInt()], style: textStyle);
+    } else if (view == 'Aylık') {
+      return Text('${value.toInt() + 1}. Hafta', style: textStyle);
+    } else {
+      const months = [
+        'O',
+        'Ş',
+        'M',
+        'N',
+        'M',
+        'H',
+        'T',
+        'A',
+        'E',
+        'E',
+        'K',
+        'A',
+      ];
+      return Text(months[value.toInt()], style: textStyle);
+    }
+  }
+
+  double getMaxY(List<BarChartGroupData> barGroups) {
+    if (barGroups.isEmpty) return 10;
+    final max = barGroups
+        .map((e) => e.barRods[0].toY)
+        .reduce((a, b) => a > b ? a : b);
+    return max <= 0.1
+        ? 10
+        : max + (max * 0.1); // %10 marj ekle, sıfır veya küçükse varsayılan 10
+  }
 }

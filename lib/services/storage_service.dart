@@ -5,6 +5,7 @@ abstract class StorageKeys {
   static const String token = "user_token";
   static const String themeMode = "theme_mode";
   static const String refreshToken = "refresh_token";
+  static const String savedStartTime = "saved_time";
 }
 
 class StorageService extends GetxService {

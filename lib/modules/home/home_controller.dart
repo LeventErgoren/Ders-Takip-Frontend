@@ -23,18 +23,24 @@ class HomeController extends BaseController {
     _authService = Get.find<AuthService>();
     _service = Get.find<CalismaSuresiRepository>();
 
+    await calismaSuresiGuncelle();
+  }
+
+  Future<void> calismaSuresiGuncelle() async {
+    setLoading(true);
     todayCalismaSureleri.value = await _service.getCalismaSureleriWithTime(
       CalismaSuresiTime.TODAY,
       _authService.userId.value,
     );
-
     _todayCalismaSuresiTopla();
+    setLoading(false);
   }
 
   void _todayCalismaSuresiTopla() {
     if (todayCalismaSureleri.value == null) {
       return;
     }
+    todayTotalTime.value = 0;
     for (var c in todayCalismaSureleri.value!) {
       todayTotalTime.value = todayTotalTime.value + c.dakika;
     }
