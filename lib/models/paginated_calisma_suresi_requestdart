@@ -1,0 +1,20 @@
+class PaginatedCalismaSuresiRequest {
+  final int id;
+  final int page;
+  final String sort;
+
+  PaginatedCalismaSuresiRequest({
+    required this.id,
+    required this.page,
+    required this.sort,
+  });
+
+  factory PaginatedCalismaSuresiRequest.fromJson(Map<String, dynamic> json) =>
+      PaginatedCalismaSuresiRequest(
+        id: json["id"],
+        page: json["page"],
+        sort: json["sort"],
+      );
+
+  Map<String, dynamic> toJson() => {"id": id, "page": page, "sort": sort};
+}

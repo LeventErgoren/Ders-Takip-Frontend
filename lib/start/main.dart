@@ -25,19 +25,26 @@ void main(List<String> args) {
       ),
       isSticky: true,
       visibility: NotificationVisibility.VISIBILITY_PUBLIC,
+
+      // İşte burada butonları ekliyoruz:
+      buttons: [
+        NotificationButton(id: 'pause_or_resume', text: 'Durdur/Başlat'),
+        NotificationButton(id: 'reset', text: 'Bitir'),
+      ],
     ),
     iosNotificationOptions: const IOSNotificationOptions(
       showNotification: true,
       playSound: false,
     ),
     foregroundTaskOptions: const ForegroundTaskOptions(
-      interval: 1000, // 1 saniye olmalı
+      interval: 1000,
       isOnceEvent: false,
       autoRunOnBoot: false,
       allowWakeLock: true,
       allowWifiLock: false,
     ),
   );
+
   runApp(const MyApp());
 }
 
@@ -68,6 +75,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+@pragma('vm:entry-point')
 void startCallback() {
   FlutterForegroundTask.setTaskHandler(MyTaskHandler());
 }

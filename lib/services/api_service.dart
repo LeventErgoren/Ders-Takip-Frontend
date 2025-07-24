@@ -13,6 +13,7 @@ abstract class ApiConstants {
   static const getCalismaSureleri = "/api/v1/calisma-sureleri/";
   static const getCalismaSureleriWithTime =
       "/api/v1/calisma-sureleri-with-time/";
+  static const paginatedCalismaSuresi = "/api/v1/get-paginated-calisma-suresi";
 }
 
 class ApiService extends GetxService {
@@ -97,12 +98,14 @@ class ApiService extends GetxService {
     String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,
+    dynamic data,
   }) async {
     try {
       return await _dio.get(
         path,
         queryParameters: queryParameters,
         options: options,
+        data: data,
       );
     } catch (e) {
       print("Dio get error $e");

@@ -1,5 +1,7 @@
 import 'package:ders_app/models/calisma_suresi.dart';
 import 'package:ders_app/models/calisma_suresi_time.dart';
+import 'package:ders_app/models/paginated_calisma_suresi_requestdart';
+import 'package:ders_app/models/paginated_calisma_suresi_response.dart';
 import 'package:ders_app/services/api_service.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +12,19 @@ class CalismaSuresiRepository extends GetxService {
   void onInit() {
     super.onInit();
     _apiService = Get.find<ApiService>();
+  }
+
+  Future<PaginatedCalismaSuresiResponse> getPaginatedCalismaSureleri(
+    PaginatedCalismaSuresiRequest request,
+  ) async {
+    final response = await _apiService.get(
+      ApiConstants.paginatedCalismaSuresi,
+      data: request.toJson(),
+    );
+    if (response.statusCode == 200) {
+      return PaginatedCalismaSuresiResponse.fromJson(response.data);
+    }
+    throw Exception("Paginated çalışma süresi getirilirken bir sorun oluştu");
   }
 
   Future<List<CalismaSuresi>> getCalismaSureleriWithTime(

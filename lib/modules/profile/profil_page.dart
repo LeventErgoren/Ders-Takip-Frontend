@@ -1,4 +1,6 @@
 import 'package:ders_app/modules/profile/profile_controller.dart';
+import 'package:ders_app/modules/profile/widgets/calismalarim.dart';
+import 'package:ders_app/modules/profile/widgets/cikis_yap.dart';
 import 'package:ders_app/modules/profile/widgets/eposta_ve_kayit_tarihi.dart';
 import 'package:ders_app/modules/profile/widgets/istatistikler.dart';
 import 'package:ders_app/modules/profile/widgets/profil_kart.dart';
@@ -35,19 +37,17 @@ class ProfilePage extends GetView<ProfileController> {
 
                     const Divider(height: 32),
 
+                    const CalismalarimButonu(),
+
+                    const Divider(height: 32),
+
                     // Tema Değiştir
                     TemaDegistir(),
 
                     const Divider(height: 32),
 
                     // Çıkış Yap
-                    ListTile(
-                      leading: const Icon(Icons.logout),
-                      title: const Text("Çıkış Yap"),
-                      onTap: () {
-                        Get.offAllNamed('/login');
-                      },
-                    ),
+                    CikisYap(),
                   ],
                 ),
               ),

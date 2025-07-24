@@ -75,6 +75,23 @@ class CustomDrawer extends GetView<HomeController> {
                 Get.toNamed(AppRoutes.STATISTICS);
               },
             ),
+            ListTile(
+              leading: Icon(
+                Icons.access_time,
+                color: isDark ? Colors.white : theme.colorScheme.primary,
+              ),
+              title: Text(
+                "Çalışmalarım",
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onBackground,
+                ),
+              ),
+              onTap: () {
+                Get.toNamed(
+                  AppRoutes.TIME,
+                ); // burası yönlendirmek istediğin sayfa
+              },
+            ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),

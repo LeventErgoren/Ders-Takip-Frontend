@@ -1,6 +1,7 @@
 import 'package:ders_app/core/base_controller.dart';
 import 'package:ders_app/models/calisma_suresi.dart';
 import 'package:ders_app/models/calisma_suresi_time.dart';
+import 'package:ders_app/modules/routes/app_pages.dart';
 import 'package:ders_app/repositories/calisma_suresi_repository.dart';
 import 'package:ders_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -51,5 +52,9 @@ class HomeController extends BaseController {
     int dakika = todayTotalTime.value % 60;
 
     return "$saat Saat $dakika Dakika";
+  }
+
+  void addTime() {
+    Get.toNamed(AppRoutes.ADD_WORK);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:ders_app/modules/add_calisma/add_calisma_binding.dart';
+import 'package:ders_app/modules/add_calisma/add_calisma_page.dart';
 import 'package:ders_app/modules/home/home_binding.dart';
 import 'package:ders_app/modules/home/home_page.dart';
 import 'package:ders_app/modules/login/login_binding.dart';
@@ -8,6 +10,8 @@ import 'package:ders_app/modules/splash/splash_binding.dart';
 import 'package:ders_app/modules/splash/splash_page.dart';
 import 'package:ders_app/modules/statistics/statistics_binding.dart';
 import 'package:ders_app/modules/statistics/statistics_page.dart';
+import 'package:ders_app/modules/time/time_binding.dart';
+import 'package:ders_app/modules/time/time_page.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
 abstract class AppRoutes {
@@ -17,6 +21,8 @@ abstract class AppRoutes {
   static const REGISTER = "/register";
   static const HOME = "/home";
   static const STATISTICS = "/statistics";
+  static const TIME = "/time";
+  static const ADD_WORK = "/add-work";
 }
 
 class AppPages {
@@ -45,6 +51,16 @@ class AppPages {
       name: AppRoutes.STATISTICS,
       page: () => StatisticsPage(),
       binding: StatisticsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.TIME,
+      page: () => TimePage(),
+      binding: TimeBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.ADD_WORK,
+      page: () => AddCalismaPage(),
+      binding: AddCalismaBinding(),
     ),
   ];
 }

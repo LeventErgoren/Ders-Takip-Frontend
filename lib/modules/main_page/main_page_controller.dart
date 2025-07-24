@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:ders_app/core/base_controller.dart';
 import 'package:ders_app/modules/home/home_controller.dart';
-import 'package:ders_app/modules/main_page/my_task_handler.dart';
 import 'package:ders_app/modules/main_page/widgets/dialog_goster.dart';
 import 'package:ders_app/repositories/calisma_suresi_repository.dart';
 import 'package:ders_app/services/auth_service.dart';
@@ -86,6 +85,7 @@ class MainPageController extends BaseController {
       }
 
       await _storage.remove(StorageKeys.savedStartTime);
+      await FlutterForegroundTask.stopService();
       stop();
       elapsed.value = Duration.zero;
     }
