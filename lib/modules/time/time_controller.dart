@@ -14,6 +14,7 @@ class TimeController extends BaseController {
   final pageSize = 10.obs;
   late int userId;
   late CalismaSuresiRepository _repository;
+  Map<int, List<CalismaSuresi>> cachedData = {};
 
   @override
   void onInit() async {
@@ -26,36 +27,52 @@ class TimeController extends BaseController {
   }
 
   Future<void> getPaginatedList() async {
-    setLoading(true);
+    if (cachedData.containsKey(currentPage.value)) {
+      paginatedList.value = cachedData[currentPage.value];
+    } else {
+      setLoading(true);
 
-    PaginatedCalismaSuresiRequest request = PaginatedCalismaSuresiRequest(
-      id: userId,
-      page: currentPage.value,
-      sort: sort.value,
-    );
+      PaginatedCalismaSuresiRequest request = PaginatedCalismaSuresiRequest(
+        id: userId,
+        page: currentPage.value,
+        sort: sort.value,
+      );
 
-    PaginatedCalismaSuresiResponse response = await _repository
-        .getPaginatedCalismaSureleri(request);
+      PaginatedCalismaSuresiResponse? response = await _repository
+          .getPaginatedCalismaSureleri(request);
 
-    currentPage.value = response.pageNumber;
-    maxPage.value = response.totalElement;
-    pageSize.value = response.pageSize;
-    paginatedList.value = response.content;
+      if (response != null) {
+        currentPage.value = response.pageNumber;
+        maxPage.value = response.totalElement;
+        pageSize.value = response.pageSize;
+        paginatedList.value = response.content;
 
-    setLoading(false);
+        cachedData[currentPage.value] = response.content;
+
+        cachedData = Map.fromEntries(
+          cachedData.entries.where(
+            (e) => (e.key - currentPage.value).abs() < 4,
+          ),
+        );
+      } else {
+        paginatedList.value = null;
+      }
+
+      setLoading(false);
+    }
   }
 
   void makeAsc(_) {
     sort.value = 'asc';
     currentPage.value = 0;
+    cachedData.clear();
     getPaginatedList();
   }
 
   void makeDesc(bool value) {
     sort.value = 'desc';
     currentPage.value = 0;
+    cachedData.clear();
     getPaginatedList();
   }
-
-
 }

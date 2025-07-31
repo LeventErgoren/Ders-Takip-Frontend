@@ -61,7 +61,7 @@ class StorageService extends GetxService {
 
   Future<bool> remove(String key) async {
     try {
-      return _preferences.remove(key);
+      return await _preferences.remove(key);
     } catch (e) {
       print("Kayıt local storagedan silinirken bir hata oluştu $e");
       return false;

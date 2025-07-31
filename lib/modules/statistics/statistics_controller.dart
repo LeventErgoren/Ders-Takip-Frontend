@@ -64,13 +64,28 @@ class StatisticsController extends BaseController {
   buAyinVerileri() {
     final now = DateTime.now();
     final startOfMonth = DateTime(now.year, now.month, 1);
-    istenilenVeri.value = orijinalVeri
+    final endOfMonth = DateTime(now.year, now.month + 1, 0); // ayın son günü
+
+    final ayVerileri = orijinalVeri
         .where(
-          (v) => v.creationDate.isAfter(
-            startOfMonth.subtract(const Duration(seconds: 1)),
-          ),
+          (v) =>
+              v.creationDate.isAfter(
+                startOfMonth.subtract(const Duration(seconds: 1)),
+              ) &&
+              v.creationDate.isBefore(endOfMonth.add(const Duration(days: 1))),
         )
         .toList();
+
+    final haftalikVeri = aylikVeriyi4HaftayaGrupla(ayVerileri);
+
+    istenilenVeri.value = haftalikVeri.map((hafta) {
+      int toplamDakika = hafta.fold(0, (sum, v) => sum + v.dakika);
+      return CalismaSuresi(
+        dakika: toplamDakika,
+        creationDate: hafta.firstOrNull?.creationDate ?? DateTime.now(),
+      );
+    }).toList();
+
     calismaSuresiHesapla();
   }
 
@@ -85,13 +100,6 @@ class StatisticsController extends BaseController {
         )
         .toList();
     calismaSuresiHesapla();
-  }
-
-  calismaSuresiHesapla() {
-    toplamCalismaSuresi.value = 0;
-    for (var c in istenilenVeri.value) {
-      toplamCalismaSuresi.value += c.dakika;
-    }
   }
 
   void selectedViewChanged(String? value) {
@@ -110,7 +118,6 @@ class StatisticsController extends BaseController {
         buYilinVerileri();
         break;
     }
-    ;
   }
 
   List<DropdownMenuItem<String>> getItems(BuildContext context) {
@@ -162,8 +169,35 @@ class StatisticsController extends BaseController {
     final max = barGroups
         .map((e) => e.barRods[0].toY)
         .reduce((a, b) => a > b ? a : b);
-    return max <= 0.1
-        ? 10
-        : max + (max * 0.1); // %10 marj ekle, sıfır veya küçükse varsayılan 10
+    return max <= 0.1 ? 10 : max + (max * 0.1); // %10 marj
+  }
+
+  List<List<CalismaSuresi>> aylikVeriyi4HaftayaGrupla(
+    List<CalismaSuresi> veriListesi,
+  ) {
+    List<List<CalismaSuresi>> haftalikVeriler = List.generate(4, (_) => []);
+
+    for (var veri in veriListesi) {
+      int gun = veri.creationDate.day;
+
+      if (gun <= 7) {
+        haftalikVeriler[0].add(veri);
+      } else if (gun <= 14) {
+        haftalikVeriler[1].add(veri);
+      } else if (gun <= 21) {
+        haftalikVeriler[2].add(veri);
+      } else {
+        haftalikVeriler[3].add(veri); // 22 ve sonrası 4. hafta
+      }
+    }
+
+    return haftalikVeriler;
+  }
+
+  void calismaSuresiHesapla() {
+    toplamCalismaSuresi.value = 0;
+    for (var c in istenilenVeri.value) {
+      toplamCalismaSuresi.value += c.dakika;
+    }
   }
 }

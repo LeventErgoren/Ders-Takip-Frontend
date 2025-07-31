@@ -3,6 +3,7 @@ import 'package:ders_app/models/calisma_suresi_time.dart';
 import 'package:ders_app/models/paginated_calisma_suresi_requestdart';
 import 'package:ders_app/models/paginated_calisma_suresi_response.dart';
 import 'package:ders_app/services/api_service.dart';
+import 'package:ders_app/utils/convert_date.dart';
 import 'package:get/get.dart';
 
 class CalismaSuresiRepository extends GetxService {
@@ -14,7 +15,7 @@ class CalismaSuresiRepository extends GetxService {
     _apiService = Get.find<ApiService>();
   }
 
-  Future<PaginatedCalismaSuresiResponse> getPaginatedCalismaSureleri(
+  Future<PaginatedCalismaSuresiResponse?> getPaginatedCalismaSureleri(
     PaginatedCalismaSuresiRequest request,
   ) async {
     final response = await _apiService.get(
@@ -22,7 +23,9 @@ class CalismaSuresiRepository extends GetxService {
       data: request.toJson(),
     );
     if (response.statusCode == 200) {
-      return PaginatedCalismaSuresiResponse.fromJson(response.data);
+      if (response.data["content"] != null)
+        return PaginatedCalismaSuresiResponse.fromJson(response.data);
+      return null;
     }
     throw Exception("Paginated çalışma süresi getirilirken bir sorun oluştu");
   }
@@ -64,5 +67,23 @@ class CalismaSuresiRepository extends GetxService {
       return CalismaSuresi.fromJson(response.data);
     }
     throw Exception("Çalışma süresi eklenirken bir hata oluştu");
+  }
+
+  Future<bool> addCalismaSuresiWithTime(
+    int id,
+    int minute,
+    DateTime date,
+  ) async {
+    final tarih = convertDate(date);
+
+    final response = await _apiService.post(
+      ApiConstants.postCalismaSuresiWithTime + id.toString(),
+      queryParameters: {"dakika": minute, "date": tarih},
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 }

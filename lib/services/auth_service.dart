@@ -1,6 +1,8 @@
 import 'package:ders_app/models/register_request.dart';
+import 'package:ders_app/models/tokens.dart';
 import 'package:ders_app/models/user.dart';
 import 'package:ders_app/models/login_request.dart';
+import 'package:ders_app/modules/routes/app_pages.dart';
 import 'package:ders_app/services/api_service.dart';
 import 'package:ders_app/services/storage_service.dart';
 import 'package:dio/dio.dart';
@@ -120,8 +122,9 @@ class AuthService extends GetxService {
 
   Future<void> signOut() async {
     try {
-      await _storageService.remove(StorageKeys.token);
-      await _storageService.remove(StorageKeys.refreshToken);
+      await clearUserDetails();
+      Get.find<ApiService>().inApp = false;
+      Get.toNamed(AppRoutes.LOGIN);
     } catch (e) {
       print("Çıkış yapılırken hata çıktı $e");
     }
@@ -143,24 +146,71 @@ class AuthService extends GetxService {
     await _storageService.remove(StorageKeys.refreshToken);
   }
 
-  Future<bool> isAuthenticated() async {
-    try {
-      final token = _storageService.getValue<String>(StorageKeys.token);
-      if (token == null) {
-        currentUser.value = null;
-        return false;
-      }
+  Future<void> checkToken() async {
+    String? token = _storageService.getValue(StorageKeys.token);
+    String? refreshToken = _storageService.getValue(StorageKeys.refreshToken);
 
-      final response = await getProfile();
-      if (response != null) {
-        currentUser.value = response;
-        return true;
+    if (token == null || refreshToken == null) {
+      await clearUserDetails();
+      Get.toNamed(AppRoutes.LOGIN);
+      return;
+    }
+
+    try {
+      userId.value = _getIdFromToken();
+      final response = await _apiService.get(
+        ApiConstants.getOgrenci + userId.toString(),
+      );
+
+      if (response.statusCode == 200) {
+        Get.toNamed(AppRoutes.HOME);
+        Get.find<ApiService>().inApp = true;
+        return;
       }
-      return false;
+      await clearUserDetails();
+    } on DioException catch (e) {
+      print("TOKEN SÜRESİ DOLMUŞTUR!!!!!!!!!!!");
+      await tryRefreshToken(refreshToken);
     } catch (e) {
-      await clearTokenAndRefreshToken();
-      currentUser.value = null;
-      return false;
+      print("BAŞKA BİR HATA VAR");
+    }
+  }
+
+  Future<void> clearUserDetails() async {
+    await clearTokenAndRefreshToken();
+    errorMessage.value = "";
+    userId.value = -1;
+    currentUser.value = null;
+  }
+
+  Future<void> tryRefreshToken(String refreshToken) async {
+    try {
+      final response = await _apiService.post(
+        ApiConstants.refreshToken,
+        data: {"refreshToken": refreshToken},
+      );
+
+      if (response.statusCode == 200) {
+        print("REFRESH TOKEN ALINIYOR");
+        Tokens tokens = Tokens.fromJson(response.data);
+        await _storageService.setValue<String>(
+          StorageKeys.token,
+          tokens.accessToken,
+        );
+        await _storageService.setValue<String>(
+          StorageKeys.refreshToken,
+          tokens.refreshToken,
+        );
+        print("REFRESH TOKEN ALINDI");
+        Get.toNamed(AppRoutes.HOME);
+      }
+    } on DioException catch (e) {
+      print("Refresh tokenın süresi dolmuştur");
+      await clearUserDetails();
+      Get.toNamed(AppRoutes.LOGIN);
+    } catch (e) {
+      print("Refresh tokenda bilinmeyen bir hata oluştu");
+      Get.toNamed(AppRoutes.LOGIN);
     }
   }
 }

@@ -5,8 +5,6 @@ import 'package:ders_app/modules/main_page/widgets/dialog_goster.dart';
 import 'package:ders_app/repositories/calisma_suresi_repository.dart';
 import 'package:ders_app/services/auth_service.dart';
 import 'package:ders_app/services/storage_service.dart';
-import 'package:ders_app/start/main.dart';
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:get/get.dart';
 
 class MainPageController extends BaseController {
@@ -25,15 +23,7 @@ class MainPageController extends BaseController {
 
     DateTime now = DateTime.now();
     String dateTimeString = now.toIso8601String();
-    try {
-      await FlutterForegroundTask.startService(
-        notificationTitle: 'Ders Sayacı Aktif',
-        notificationText: 'Çalışma süresi: 00:00:00',
-        callback: startCallback,
-      );
-    } catch (e) {
-      print('Foreground service başlatılırken hata: $e');
-    }
+
     await _storage.setValue<String>(StorageKeys.savedStartTime, dateTimeString);
     isRunning.value = true;
     _startTime = DateTime.now().subtract(elapsed.value);
@@ -41,20 +31,7 @@ class MainPageController extends BaseController {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final now = DateTime.now();
       elapsed.value = now.difference(_startTime!);
-
-      FlutterForegroundTask.updateService(
-        notificationTitle: 'Ders Sayacı Aktif',
-        notificationText: 'Çalışma süresi: ${_formatDuration(elapsed.value)}',
-      );
     });
-  }
-
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = twoDigits(duration.inHours);
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$hours:$minutes:$seconds';
   }
 
   void stop() {
@@ -74,6 +51,7 @@ class MainPageController extends BaseController {
             elapsed.value.inMinutes,
           );
           await _homeController.calismaSuresiGuncelle();
+          showSuccess("Kayıt başarıyla eklendi!");
         } else {
           showError("1 Dakikadan az çalışma süreleri kayıt edilmez!");
         }
@@ -85,7 +63,6 @@ class MainPageController extends BaseController {
       }
 
       await _storage.remove(StorageKeys.savedStartTime);
-      await FlutterForegroundTask.stopService();
       stop();
       elapsed.value = Duration.zero;
     }

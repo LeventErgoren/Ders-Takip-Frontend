@@ -1,6 +1,7 @@
 import 'package:ders_app/core/base_controller.dart';
 import 'package:ders_app/models/login_request.dart';
 import 'package:ders_app/modules/routes/app_pages.dart';
+import 'package:ders_app/services/api_service.dart';
 import 'package:ders_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,6 +45,7 @@ class LoginController extends BaseController {
 
       if (await _service.login(user)) {
         Get.offAllNamed(AppRoutes.HOME);
+        Get.find<ApiService>().inApp = true;
         showSuccess("Giriş başarılı!");
       } else {
         showError(_service.errorMessage.value);

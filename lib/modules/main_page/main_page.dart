@@ -3,7 +3,7 @@ import 'package:get/state_manager.dart';
 import 'package:ders_app/modules/main_page/main_page_controller.dart';
 
 class MainPage extends GetView<MainPageController> {
-  MainPage({super.key});
+  const MainPage({super.key});
 
   String formatTime(Duration d) {
     String two(int n) => n.toString().padLeft(2, '0');

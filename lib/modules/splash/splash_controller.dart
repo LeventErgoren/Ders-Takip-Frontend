@@ -6,12 +6,14 @@ import 'package:ders_app/services/storage_service.dart';
 import 'package:get/get.dart';
 
 class SplashController extends BaseController {
+  late AuthService _service;
+
   @override
   void onReady() async {
     super.onReady();
     await waitForServices();
-    // await checkTokenAndRedirect();
-    Get.offAllNamed(AppRoutes.LOGIN);
+    await checkTokenAndRedirect();
+    // Get.offAllNamed(AppRoutes.LOGIN);
   }
 
   Future<void> waitForServices() async {
@@ -23,13 +25,7 @@ class SplashController extends BaseController {
   }
 
   Future<void> checkTokenAndRedirect() async {
-    final _authService = Get.find<AuthService>();
-    final isAuthenticated = await _authService.isAuthenticated();
-
-    if (isAuthenticated) {
-      Get.offAllNamed(AppRoutes.HOME);
-    } else {
-      Get.offAllNamed(AppRoutes.LOGIN);
-    }
+    _service = Get.find<AuthService>();
+    await _service.checkToken();
   }
 }

@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 class TimeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => TimeController());
+    Get.lazyPut(() => TimeController(),fenix: true);
   }
 }

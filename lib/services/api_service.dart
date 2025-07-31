@@ -1,3 +1,5 @@
+import 'package:ders_app/models/tokens.dart';
+import 'package:ders_app/modules/routes/app_pages.dart';
 import 'package:ders_app/services/auth_service.dart';
 import 'package:ders_app/services/storage_service.dart';
 import 'package:dio/dio.dart';
@@ -10,6 +12,7 @@ abstract class ApiConstants {
   static const refreshToken = "/refreshToken";
   static const getOgrenci = "/api/v1/ogrenci/get/";
   static const postCalismaSuresi = "/api/v1/add-calisma-suresi/";
+  static const postCalismaSuresiWithTime = "/api/v1/add-calisma-suresi-time/";
   static const getCalismaSureleri = "/api/v1/calisma-sureleri/";
   static const getCalismaSureleriWithTime =
       "/api/v1/calisma-sureleri-with-time/";
@@ -19,6 +22,7 @@ abstract class ApiConstants {
 class ApiService extends GetxService {
   late StorageService _storageService;
   late Dio _dio;
+  bool inApp = false;
 
   final List<String> noAuthRequests = [
     "/authenticate",
@@ -59,39 +63,107 @@ class ApiService extends GetxService {
           // }
           // return handler.next(options);
         },
-        onError: (error, handler) async {
-          if (error.response!.statusCode == 401) {
-            final _authService = Get.find<AuthService>();
-            final isRefreshed = await _authService.refreshToken();
 
-            if (isRefreshed) {
+        onError: (error, handler) async {
+          if (error.response?.statusCode == 401 && inApp) {
+            final success = await _tryRefreshToken();
+            if (success) {
               final newToken = _storageService.getValue<String>(
                 StorageKeys.token,
               );
-              error.requestOptions.headers["Authorization"] =
-                  "Bearer $newToken";
+              final options = error.requestOptions;
 
-              final clonedRequest = await _dio.fetch(error.requestOptions);
-              return handler.resolve(clonedRequest);
+              options.headers["Authorization"] = "Bearer $newToken";
+
+              try {
+                final clonedResponse = await _dio.fetch(options);
+                return handler.resolve(clonedResponse);
+              } catch (e) {
+                return handler.reject(error);
+              }
             } else {
-              final _authService = Get.find<AuthService>();
-              await _authService.clearTokenAndRefreshToken();
-
-              Get.offAllNamed("/login");
-
+              Get.find<AuthService>().signOut();
+              Get.toNamed(AppRoutes.LOGIN);
+              
               return handler.reject(error);
             }
           }
-
           return handler.next(error);
-          // if (error.response!.statusCode == 401) {
-          //   await _storageService.remove(StorageKeys.token);
-          // }
-          // return handler.next(error);
         },
+
+        // onError: (error, handler) async {
+        //   // if (error.response!.statusCode == 401) {
+        //   //   final _authService = Get.find<AuthService>();
+        //   //   final isRefreshed = await _authService.refreshToken();
+
+        //   //   if (isRefreshed) {
+        //   //     final newToken = _storageService.getValue<String>(
+        //   //       StorageKeys.token,
+        //   //     );
+        //   //     error.requestOptions.headers["Authorization"] =
+        //   //         "Bearer $newToken";
+
+        //   //     final clonedRequest = await _dio.fetch(error.requestOptions);
+        //   //     return handler.resolve(clonedRequest);
+        //   //   } else {
+        //   //     final _authService = Get.find<AuthService>();
+        //   //     await _authService.clearTokenAndRefreshToken();
+
+        //   //     Get.offAllNamed("/login");
+
+        //   //     return handler.reject(error);
+        //   //   }
+        //   // }
+
+        //   return handler.next(error);
+        //   // if (error.response!.statusCode == 401) {
+        //   //   await _storageService.remove(StorageKeys.token);
+        //   // }
+        //   // return handler.next(error);
+        // },
       ),
     );
     return this;
+  }
+
+  Future<bool> _tryRefreshToken() async {
+    try {
+      String? refreshToken = _storageService.getValue<String>(
+        StorageKeys.refreshToken,
+      );
+      final response = await post(
+        ApiConstants.refreshToken,
+        data: {"refreshToken": refreshToken},
+      );
+
+      if (response.statusCode == 200) {
+        print("REFRESH TOKEN ALINIYOR");
+        Tokens tokens = Tokens.fromJson(response.data);
+        await _storageService.setValue<String>(
+          StorageKeys.token,
+          tokens.accessToken,
+        );
+        await _storageService.setValue<String>(
+          StorageKeys.refreshToken,
+          tokens.refreshToken,
+        );
+        print("REFRESH TOKEN ALINDI");
+        return true;
+      }
+      return false;
+    } on DioException catch (e) {
+      print("Refresh tokenın süresi dolmuştur");
+      await _storageService.remove(StorageKeys.token);
+      await _storageService.remove(StorageKeys.refreshToken);
+      Get.toNamed(AppRoutes.LOGIN);
+      return false;
+    } catch (e) {
+      print("Refresh tokenda bilinmeyen bir hata oluştu");
+      await _storageService.remove(StorageKeys.token);
+      await _storageService.remove(StorageKeys.refreshToken);
+      Get.toNamed(AppRoutes.LOGIN);
+      return false;
+    }
   }
 
   Future<Response> get(

@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 class StatisticsBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => StatisticsController());
+    Get.lazyPut(() => StatisticsController(),fenix: true);
   }
 }
