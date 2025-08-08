@@ -1,7 +1,8 @@
+import 'package:ders_app/modules/profile/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TemaDegistir extends StatelessWidget {
+class TemaDegistir extends GetView<ProfileController> {
   const TemaDegistir({super.key});
 
   @override
@@ -14,11 +15,11 @@ class TemaDegistir extends StatelessWidget {
       trailing: Switch(
         value: isDarkMode,
         onChanged: (_) {
-          Get.changeThemeMode(isDarkMode ? ThemeMode.light : ThemeMode.dark);
+          controller.changeTheme();
         },
       ),
       onTap: () {
-        Get.changeThemeMode(isDarkMode ? ThemeMode.light : ThemeMode.dark);
+        controller.changeTheme();
       },
     );
   }

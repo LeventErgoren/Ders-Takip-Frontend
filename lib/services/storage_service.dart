@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class StorageKeys {
   static const String token = "user_token";
-  static const String themeMode = "theme_mode";
+  static const String themeMode = "light";
   static const String refreshToken = "refresh_token";
   static const String savedStartTime = "saved_time";
   static const String notificationSavedStartTime = "notification_time";

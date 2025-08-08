@@ -4,6 +4,7 @@ import 'package:ders_app/modules/home/home_binding.dart';
 import 'package:ders_app/modules/home/home_page.dart';
 import 'package:ders_app/modules/login/login_binding.dart';
 import 'package:ders_app/modules/login/login_page.dart';
+import 'package:ders_app/modules/maintenance/maintenance_page.dart';
 import 'package:ders_app/modules/register/register_binding.dart';
 import 'package:ders_app/modules/register/register_page.dart';
 import 'package:ders_app/modules/splash/splash_binding.dart';
@@ -23,6 +24,7 @@ abstract class AppRoutes {
   static const STATISTICS = "/statistics";
   static const TIME = "/time";
   static const ADD_WORK = "/add-work";
+  static const MAINTENANCE = "/maintenance";
 }
 
 class AppPages {

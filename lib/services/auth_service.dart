@@ -1,3 +1,4 @@
+import 'package:ders_app/models/maintenance.dart';
 import 'package:ders_app/models/register_request.dart';
 import 'package:ders_app/models/tokens.dart';
 import 'package:ders_app/models/user.dart';
@@ -211,6 +212,21 @@ class AuthService extends GetxService {
     } catch (e) {
       print("Refresh tokenda bilinmeyen bir hata oluştu");
       Get.toNamed(AppRoutes.LOGIN);
+    }
+  }
+
+  Future<Maintenance?> isMaintenance() async {
+    try {
+      final response = await _apiService.get(ApiConstants.isMaintenance);
+
+      if (response.statusCode == 200) {
+        Maintenance maintenance = Maintenance.fromJson(response.data);
+        return maintenance;
+      }
+
+      return null;
+    } catch (e) {
+      return null;
     }
   }
 }

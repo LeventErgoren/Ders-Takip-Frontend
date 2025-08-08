@@ -45,6 +45,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.4.0
   fl_chart: ^1.0.0
   flutter_staggered_animations: ^1.0.0
+  connectivity_plus: ^6.1.4
 
 dev_dependencies:
   flutter_test:

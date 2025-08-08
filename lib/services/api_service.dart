@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 
 abstract class ApiConstants {
-  static const baseUrl = "http://10.0.2.2:8080";
+  static const baseUrl = "http://91.232.103.21:8080";
   static const login = "/authenticate";
   static const register = "/register";
   static const refreshToken = "/refreshToken";
@@ -17,6 +17,7 @@ abstract class ApiConstants {
   static const getCalismaSureleriWithTime =
       "/api/v1/calisma-sureleri-with-time/";
   static const paginatedCalismaSuresi = "/api/v1/get-paginated-calisma-suresi";
+  static const isMaintenance = "/is-maintenance";
 }
 
 class ApiService extends GetxService {

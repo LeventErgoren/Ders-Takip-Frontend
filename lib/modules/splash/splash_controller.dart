@@ -1,8 +1,10 @@
 import 'package:ders_app/core/base_controller.dart';
-import 'package:ders_app/modules/routes/app_pages.dart';
+import 'package:ders_app/models/maintenance.dart';
+import 'package:ders_app/modules/maintenance/maintenance_page.dart';
 import 'package:ders_app/services/api_service.dart';
 import 'package:ders_app/services/auth_service.dart';
 import 'package:ders_app/services/storage_service.dart';
+import 'package:ders_app/services/theme_service.dart';
 import 'package:get/get.dart';
 
 class SplashController extends BaseController {
@@ -12,14 +14,21 @@ class SplashController extends BaseController {
   void onReady() async {
     super.onReady();
     await waitForServices();
-    await checkTokenAndRedirect();
-    // Get.offAllNamed(AppRoutes.LOGIN);
+    _service = Get.find<AuthService>();
+
+    Maintenance? maintenance = await _service.isMaintenance();
+    if (maintenance == null || maintenance.maintenance) {
+      Get.offAll(() => MaintenanceView(maintenance: maintenance));
+    } else {
+      await checkTokenAndRedirect();
+    }
   }
 
   Future<void> waitForServices() async {
     while (!Get.isRegistered<ApiService>() ||
         !Get.isRegistered<AuthService>() ||
-        !Get.isRegistered<StorageService>()) {
+        !Get.isRegistered<StorageService>() ||
+        !Get.isRegistered<ThemeService>()) {
       await Future.delayed(Duration(milliseconds: 300));
     }
   }
