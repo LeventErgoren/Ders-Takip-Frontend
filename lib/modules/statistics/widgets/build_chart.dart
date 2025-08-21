@@ -68,8 +68,8 @@ class BuildChart extends GetView<StatisticsController> {
             topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           ),
-          borderData: FlBorderData(show: false), // Kenarlık kaldırıldı
-          gridData: FlGridData(show: false), // Grid kaldırıldı
+          borderData: FlBorderData(show: false),
+          gridData: FlGridData(show: false),
           barGroups: barGroups,
           minY: 0,
           maxY: maxY,

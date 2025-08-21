@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 class AddCalismaBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => AddCalismaController(),fenix: true);
+    Get.lazyPut(() => AddCalismaController(), fenix: true);
   }
 }

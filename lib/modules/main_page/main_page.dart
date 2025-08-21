@@ -27,7 +27,6 @@ class MainPage extends GetView<MainPageController> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Sayaç metni
               Text(
                 formatTime(elapsed),
                 style: TextStyle(
@@ -39,11 +38,9 @@ class MainPage extends GetView<MainPageController> {
               ),
               const SizedBox(height: 60),
 
-              // Butonlar
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Başlat / Durdur Toggle Butonu
                   ElevatedButton.icon(
                     icon: Icon(
                       isRunning
@@ -71,7 +68,6 @@ class MainPage extends GetView<MainPageController> {
                   ),
                   const SizedBox(width: 24),
 
-                  // Bitir Butonu (Outline)
                   OutlinedButton.icon(
                     icon: const Icon(Icons.stop_circle_outlined, size: 28),
                     label: const Text("Bitir", style: TextStyle(fontSize: 20)),

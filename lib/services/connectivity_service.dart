@@ -1,5 +1,4 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:ders_app/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

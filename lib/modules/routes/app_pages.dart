@@ -4,7 +4,6 @@ import 'package:ders_app/modules/home/home_binding.dart';
 import 'package:ders_app/modules/home/home_page.dart';
 import 'package:ders_app/modules/login/login_binding.dart';
 import 'package:ders_app/modules/login/login_page.dart';
-import 'package:ders_app/modules/maintenance/maintenance_page.dart';
 import 'package:ders_app/modules/register/register_binding.dart';
 import 'package:ders_app/modules/register/register_page.dart';
 import 'package:ders_app/modules/splash/splash_binding.dart';

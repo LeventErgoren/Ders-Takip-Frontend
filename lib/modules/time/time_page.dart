@@ -13,7 +13,6 @@ class TimePage extends GetView<TimeController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Çalışma Sürelerim'),

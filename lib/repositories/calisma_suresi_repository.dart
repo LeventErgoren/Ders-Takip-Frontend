@@ -23,8 +23,9 @@ class CalismaSuresiRepository extends GetxService {
       data: request.toJson(),
     );
     if (response.statusCode == 200) {
-      if (response.data["content"] != null)
+      if (response.data["content"] != null) {
         return PaginatedCalismaSuresiResponse.fromJson(response.data);
+      }
       return null;
     }
     throw Exception("Paginated çalışma süresi getirilirken bir sorun oluştu");

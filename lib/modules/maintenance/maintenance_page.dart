@@ -15,8 +15,8 @@ class MaintenanceView extends StatelessWidget {
 
     if (maintenance != null) {
       reason = maintenance!.reason;
-      scheduledTime = maintenance!.scheduledTime; // String: "2 Saat" gibi
-      startDateRaw = maintenance!.startDate?.toString(); // ISO string
+      scheduledTime = maintenance!.scheduledTime;
+      startDateRaw = maintenance!.startDate?.toString();
     }
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -45,7 +45,7 @@ class MaintenanceView extends StatelessWidget {
               children: [
                 Icon(
                   Icons.build_rounded,
-                  size: 64, // küçültüldü
+                  size: 64,
                   color: theme.colorScheme.primary,
                 ),
                 const SizedBox(height: 16),
@@ -57,9 +57,9 @@ class MaintenanceView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                if (reason != null && reason!.isNotEmpty)
+                if (reason != null && reason.isNotEmpty)
                   Text(
-                    reason!,
+                    reason,
                     style: theme.textTheme.bodyLarge?.copyWith(
                       color: textColor,
                     ),
@@ -93,10 +93,9 @@ class MaintenanceView extends StatelessWidget {
     );
   }
 
-  // 🔧 Tarihi "15:00, 07.08.2025" formatına çevirir
   String formatRawDate(String rawDate) {
-    final date = rawDate.substring(0, 10); // YYYY-MM-DD
-    final time = rawDate.substring(11, 16); // HH:mm
+    final date = rawDate.substring(0, 10);
+    final time = rawDate.substring(11, 16);
 
     final parts = date.split("-");
     final day = parts[2];

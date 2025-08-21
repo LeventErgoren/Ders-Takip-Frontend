@@ -12,9 +12,9 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
       isDarkMode
           ? AppColors.accentDark.withOpacity(0.5)
           : AppColors.accentLight.withOpacity(0.5),
-      Colors.white.withOpacity(isDarkMode ? 0.3 : 0.9), // Belirgin parlama
+      Colors.white.withOpacity(isDarkMode ? 0.3 : 0.9),
     ],
-    stops: [0.0, 0.5, 1.0], // Gradyan geçiş noktaları
+    stops: [0.0, 0.5, 1.0],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
@@ -39,9 +39,7 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
         x: 0,
         barRods: [
           BarChartRodData(
-            toY: totalMinutes == 0
-                ? 0.1
-                : totalMinutes.toDouble(), // Sıfır için küçük yükseklik
+            toY: totalMinutes == 0 ? 0.1 : totalMinutes.toDouble(),
             gradient: totalMinutes == 0 ? zeroGradient : activeGradient,
             width: 20,
             borderRadius: BorderRadius.circular(4),
@@ -59,30 +57,28 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
       ),
     ];
   } else if (view == 'Haftalık') {
-    Map<int, double> groupedData = {
-      0: 0,
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0,
-    }; // Tüm günler için sıfır başlat
+    Map<int, double> groupedData = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0};
+
     final now = DateTime.now();
-    final monday = now.subtract(Duration(days: now.weekday - 1));
+    final daysFromMonday = now.weekday - 1;
+    final monday = now.subtract(Duration(days: daysFromMonday));
+
     for (var item in data) {
       final date = item.creationDate;
-      final dayIndex = date.difference(monday).inDays;
+      final dayIndex = date
+          .difference(DateTime(monday.year, monday.month, monday.day))
+          .inDays;
       if (dayIndex >= 0 && dayIndex < 7) {
         groupedData[dayIndex] = (groupedData[dayIndex] ?? 0) + item.dakika;
       }
     }
+
     return groupedData.entries.map((e) {
       return BarChartGroupData(
         x: e.key,
         barRods: [
           BarChartRodData(
-            toY: e.value == 0 ? 0.1 : e.value, // Sıfır için küçük yükseklik
+            toY: e.value == 0 ? 0.1 : e.value,
             gradient: e.value == 0 ? zeroGradient : activeGradient,
             width: 12,
             borderRadius: BorderRadius.circular(4),
@@ -100,14 +96,7 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
       );
     }).toList();
   } else if (view == 'Aylık') {
-    Map<int, double> groupedData = {
-      0: 0,
-      1: 0,
-      2: 0,
-      3: 0,
-    }; // Tüm haftalar için sıfır başlat
-    final now = DateTime.now();
-    final startOfMonth = DateTime(now.year, now.month, 1);
+    Map<int, double> groupedData = {0: 0, 1: 0, 2: 0, 3: 0};
     for (var item in data) {
       final date = item.creationDate;
       final weekIndex = ((date.day - 1) / 7).floor();
@@ -120,7 +109,7 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
         x: e.key,
         barRods: [
           BarChartRodData(
-            toY: e.value == 0 ? 0.1 : e.value, // Sıfır için küçük yükseklik
+            toY: e.value == 0 ? 0.1 : e.value,
             gradient: e.value == 0 ? zeroGradient : activeGradient,
             width: 16,
             borderRadius: BorderRadius.circular(4),
@@ -151,7 +140,7 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
       9: 0,
       10: 0,
       11: 0,
-    }; // Tüm aylar için sıfır başlat
+    };
     for (var item in data) {
       final monthIndex = item.creationDate.month - 1;
       groupedData[monthIndex] = (groupedData[monthIndex] ?? 0) + item.dakika;
@@ -161,7 +150,7 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
         x: e.key,
         barRods: [
           BarChartRodData(
-            toY: e.value == 0 ? 0.1 : e.value, // Sıfır için küçük yükseklik
+            toY: e.value == 0 ? 0.1 : e.value,
             gradient: e.value == 0 ? zeroGradient : activeGradient,
             width: 16,
             borderRadius: BorderRadius.circular(4),

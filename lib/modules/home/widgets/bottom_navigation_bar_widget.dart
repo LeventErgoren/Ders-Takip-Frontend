@@ -30,7 +30,6 @@ class BottomNavigationBarWidget extends GetView<HomeController> {
         splashColor: activeColor.withOpacity(0.1),
         splashSpeedInMilliseconds: 250,
         elevation: 8,
-        // İkonların görünümü
         tabBuilder: (index, isActive) {
           final color = isActive ? activeColor : inactiveColor;
           return AnimatedContainer(
@@ -46,7 +45,6 @@ class BottomNavigationBarWidget extends GetView<HomeController> {
                   color: color,
                 ),
                 const SizedBox(height: 4),
-                // Aktif ise alt çizgi göster
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   height: 3,

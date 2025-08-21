@@ -16,7 +16,6 @@ class CustomDrawer extends GetView<HomeController> {
       child: SafeArea(
         child: Column(
           children: [
-            // 🔥 Günlük Çalışma Süresi ve Alev Efekti
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
@@ -46,7 +45,7 @@ class CustomDrawer extends GetView<HomeController> {
                   const SizedBox(height: 4),
                   Obx(
                     () => Text(
-                      controller.todayTotalTime.value == null
+                      controller.todayTotalTime.value == 0
                           ? "00:00"
                           : controller.calismaSuresiSaatVeDakika(),
                       style: theme.textTheme.headlineSmall?.copyWith(
@@ -59,7 +58,6 @@ class CustomDrawer extends GetView<HomeController> {
               ),
             ),
             const SizedBox(height: 20),
-            // 📊 İstatistikler Butonu
             ListTile(
               leading: Icon(
                 Icons.bar_chart,
@@ -87,9 +85,7 @@ class CustomDrawer extends GetView<HomeController> {
                 ),
               ),
               onTap: () {
-                Get.toNamed(
-                  AppRoutes.TIME,
-                ); // burası yönlendirmek istediğin sayfa
+                Get.toNamed(AppRoutes.TIME);
               },
             ),
             const Spacer(),

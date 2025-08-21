@@ -48,9 +48,9 @@ class BaseController extends GetxController {
       titleText: const SizedBox.shrink(),
       messageText: IntrinsicHeight(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Yatay ortalama
-          crossAxisAlignment: CrossAxisAlignment.center, // Dikey ortalama
-          mainAxisSize: MainAxisSize.min, // Row genişliğini içeriğe göre ayarla
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: iconColor, size: 24),
             const SizedBox(width: 12),

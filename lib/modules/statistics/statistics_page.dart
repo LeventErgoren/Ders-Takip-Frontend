@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class StatisticsPage extends GetView<StatisticsController> {
+  const StatisticsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +21,8 @@ class StatisticsPage extends GetView<StatisticsController> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Görünüm Seçici
             BuildDropdownbutton(),
             const SizedBox(height: 16),
-            // Grafik Alanı
             Obx(
               () => controller.isLoading
                   ? Expanded(child: Center(child: CircularProgressIndicator()))

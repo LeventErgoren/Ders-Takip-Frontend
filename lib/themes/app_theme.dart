@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     final base = ThemeData.light();
-
     final textTheme = GoogleFonts.poppinsTextTheme(base.textTheme).apply(
       bodyColor: AppColors.textPrimaryLight,
       displayColor: AppColors.textPrimaryLight,
@@ -39,14 +38,29 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: AppColors.surfaceLight,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primaryLight),
-          borderRadius: BorderRadius.circular(12),
+        filled: false,
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.primaryLight.withOpacity(0.4),
+          ),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.primaryLight.withOpacity(0.4),
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.accentLight, width: 1.5),
         ),
         hintStyle: TextStyle(color: AppColors.textSecondaryLight),
         labelStyle: TextStyle(color: AppColors.textPrimaryLight),
+        prefixIconColor: AppColors.primaryLight,
+        suffixIconColor: AppColors.primaryLight,
+      ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: AppColors.accentLight,
+        selectionColor: Color(0x22000000),
+        selectionHandleColor: AppColors.accentLight,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -79,7 +93,6 @@ class AppTheme {
 
   static ThemeData get darkTheme {
     final base = ThemeData.dark();
-
     final textTheme = GoogleFonts.poppinsTextTheme(base.textTheme).apply(
       bodyColor: AppColors.textPrimaryDark,
       displayColor: AppColors.textPrimaryDark,
@@ -113,17 +126,25 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: AppColors.surfaceDark,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primaryDark),
-          borderRadius: BorderRadius.circular(12),
+        filled: false,
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.4)),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white.withOpacity(0.4)),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.accentDark, width: 1.5),
         ),
         hintStyle: TextStyle(color: AppColors.textSecondaryDark),
         labelStyle: TextStyle(color: AppColors.textPrimaryDark),
-        iconColor: AppColors.textPrimaryDark,
         prefixIconColor: AppColors.textPrimaryDark,
         suffixIconColor: AppColors.textPrimaryDark,
+      ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: AppColors.accentDark,
+        selectionColor: Color(0x55FFFFFF),
+        selectionHandleColor: AppColors.accentDark,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

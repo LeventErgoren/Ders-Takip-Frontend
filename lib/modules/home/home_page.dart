@@ -13,7 +13,7 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: controller.activeIndex == 0 ? CustomDrawer() : SizedBox(),
+      drawer: controller.activeIndex.value == 0 ? CustomDrawer() : SizedBox(),
       floatingActionButton: FloatingActionButtonWidget(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBarWidget(),
@@ -30,7 +30,7 @@ class HomePage extends GetView<HomeController> {
                 )
               : Container(),
         ),
-      ), // Veya null, ama Container() görünmezliği daha garanti),
+      ),
       body: Obx(
         () => IndexedStack(
           index: controller.activeIndex.value,

@@ -1,7 +1,6 @@
 import 'package:ders_app/modules/add_calisma/widgets/add_calisma_button.dart';
 import 'package:ders_app/modules/add_calisma/widgets/select_date.dart';
 import 'package:ders_app/modules/add_calisma/widgets/select_minute.dart';
-import 'package:ders_app/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,15 +21,12 @@ class AddCalismaPage extends GetView<AddCalismaController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Tarih seçici
             SelectDate(),
             const SizedBox(height: 24),
 
-            // Dakika girişi
             SelectMinute(),
             const SizedBox(height: 32),
 
-            // Buton
             AddCalismaButton(),
           ],
         ),

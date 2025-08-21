@@ -61,6 +61,7 @@ class RegisterController extends BaseController {
     } else if (value.length < 4) {
       return "Şifre en az 4 karakter olmalıdır.";
     }
+    return null;
   }
 
   String? sifreTekrarValidator(String? value) {
@@ -71,6 +72,7 @@ class RegisterController extends BaseController {
     } else if (value != sifre.value) {
       return "Şifreler aynı değil!";
     }
+    return null;
   }
 
   void sifreDegisti(String value) {
@@ -80,7 +82,7 @@ class RegisterController extends BaseController {
   void kayitOl() async {
     if (key.currentState!.validate()) {
       key.currentState!.save();
-      AuthService _service = Get.find<AuthService>();
+      AuthService service = Get.find<AuthService>();
 
       RegisterRequest kullanici = RegisterRequest(
         firstname: isim.value,
@@ -90,17 +92,17 @@ class RegisterController extends BaseController {
         password: sifre.value,
       );
 
-      if (await _service.register(kullanici)) {
+      if (await service.register(kullanici)) {
         Get.offAllNamed(AppRoutes.LOGIN);
         showSuccess("Kayıt başarılı!");
       } else {
-        print(_service.errorMessage.value);
-        if (_service.errorMessage.value.contains(eposta.value)) {
+        if (service.errorMessage.value.contains(eposta.value)) {
           showError("Bu e-posta zaten kullanılıyor!");
-        } else if (_service.errorMessage.value.contains(kullaniciAdi.value))
+        } else if (service.errorMessage.value.contains(kullaniciAdi.value)) {
           showError("Bu kullanıcı adı zaten kullanılıyor!");
-        else
+        } else {
           showError("Kayıt başarısız!");
+        }
       }
     }
   }

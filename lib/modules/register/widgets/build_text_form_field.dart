@@ -13,28 +13,20 @@ Widget buildTextField(
   bool obscure = false,
   TextInputType inputType = TextInputType.text,
 }) {
+  // Temadan gelen InputDecorationTheme'i al
+  final inputTheme = theme.inputDecorationTheme;
+
   return TextFormField(
     onSaved: onSaved,
     validator: validator,
     obscureText: obscure,
     keyboardType: inputType,
-    style: TextStyle(color: theme.colorScheme.onSurface),
+    style: theme.textTheme.bodyMedium?.copyWith(
+      color: theme.colorScheme.onSurface,
+    ),
     decoration: InputDecoration(
       hintText: hint,
-      hintStyle: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6)),
-      prefixIcon: Icon(icon, color: theme.colorScheme.onSurface),
-      border: UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: theme.colorScheme.primary.withOpacity(0.4),
-        ),
-      ),
-      enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: theme.colorScheme.primary.withOpacity(0.4),
-        ),
-      ),
-      contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-      filled: false, // input içi şeffaf olacak
+      prefixIcon: Icon(icon, color: inputTheme.prefixIconColor),
     ),
   );
 }

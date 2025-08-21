@@ -25,53 +25,41 @@ class LoginForm extends GetView<LoginController> {
           Text("Lütfen hesabına giriş yap.", style: theme.textTheme.bodyMedium),
           const SizedBox(height: 28),
 
+          // Kullanıcı Adı
           Text("Kullanıcı Adı", style: theme.textTheme.labelLarge),
           const SizedBox(height: 6),
           TextFormField(
-            initialValue: "leventr13",
             onSaved: (newValue) {
               controller.kullaniciAdi.value = newValue!;
             },
             validator: (value) {
               return controller.usernameValidator(value);
             },
-
             style: TextStyle(color: theme.colorScheme.onSurface),
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              hintText: "ornek@mail.com",
-              hintStyle: TextStyle(
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
-              ),
+              hintText: "kullanici123",
               prefixIcon: Icon(
                 Icons.person_outline,
                 color: theme.colorScheme.onSurface,
               ),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary.withOpacity(0.4),
-                  width: 1,
-                ),
+              prefixIconConstraints: const BoxConstraints(
+                minWidth: 40,
+                minHeight: 40,
               ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary.withOpacity(0.4),
-                  width: 1,
-                ),
-              ),
+              isDense: true,
               contentPadding: const EdgeInsets.symmetric(
-                vertical: 10,
+                vertical: 12,
                 horizontal: 12,
               ),
-              filled: false,
             ),
-            keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(height: 18),
 
+          // Şifre
           Text("Şifre", style: theme.textTheme.labelLarge),
           const SizedBox(height: 6),
           TextFormField(
-            initialValue: "1234",
             onSaved: (newValue) {
               controller.sifre.value = newValue!;
             },
@@ -82,30 +70,19 @@ class LoginForm extends GetView<LoginController> {
             style: TextStyle(color: theme.colorScheme.onSurface),
             decoration: InputDecoration(
               hintText: "••••••••",
-              hintStyle: TextStyle(
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
-              ),
               prefixIcon: Icon(
                 Icons.lock_outline,
                 color: theme.colorScheme.onSurface,
               ),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary.withOpacity(0.4),
-                  width: 1,
-                ),
+              prefixIconConstraints: const BoxConstraints(
+                minWidth: 40,
+                minHeight: 40,
               ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: theme.colorScheme.primary.withOpacity(0.4),
-                  width: 1,
-                ),
-              ),
+              isDense: true,
               contentPadding: const EdgeInsets.symmetric(
-                vertical: 10,
+                vertical: 12,
                 horizontal: 12,
               ),
-              filled: false,
             ),
           ),
 

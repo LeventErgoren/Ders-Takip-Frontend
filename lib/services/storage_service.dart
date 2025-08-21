@@ -7,6 +7,7 @@ abstract class StorageKeys {
   static const String refreshToken = "refresh_token";
   static const String savedStartTime = "saved_time";
   static const String notificationSavedStartTime = "notification_time";
+  static const String savedElapsedSeconds = "saved_elapsed_seconds";
 }
 
 class StorageService extends GetxService {
@@ -35,7 +36,6 @@ class StorageService extends GetxService {
         );
       }
     } catch (e) {
-      print("Shared Preferences SetValue kısmında hata fırlatıldı.");
       return false;
     }
   }
@@ -53,8 +53,8 @@ class StorageService extends GetxService {
       } else if (T == List<String>) {
         return _preferences.getStringList(key) as T;
       }
+      return null;
     } catch (e) {
-      print("Veri storegedan okunurken hata çıktı.");
       return null;
     }
   }
@@ -63,7 +63,6 @@ class StorageService extends GetxService {
     try {
       return await _preferences.remove(key);
     } catch (e) {
-      print("Kayıt local storagedan silinirken bir hata oluştu $e");
       return false;
     }
   }
@@ -72,9 +71,6 @@ class StorageService extends GetxService {
     try {
       return _preferences.clear();
     } catch (e) {
-      print(
-        "Bütün veriler local storagedan clear edilirken bir sorun oluştu $e",
-      );
       return false;
     }
   }

@@ -14,7 +14,6 @@ class MainPageController extends BaseController {
   late AuthService _authService;
   late HomeController _homeController;
   late StorageService _storage;
-
   Timer? _timer;
   DateTime? _startTime;
 
@@ -23,22 +22,27 @@ class MainPageController extends BaseController {
 
     DateTime now = DateTime.now();
     String dateTimeString = now.toIso8601String();
-
     await _storage.setValue<String>(StorageKeys.savedStartTime, dateTimeString);
+
     isRunning.value = true;
     _startTime = DateTime.now().subtract(elapsed.value);
-
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final now = DateTime.now();
       elapsed.value = now.difference(_startTime!);
     });
   }
 
-  void stop() {
+  void stop() async {
     if (!isRunning.value) return;
 
     isRunning.value = false;
     _timer?.cancel();
+
+    await _storage.setValue<int>(
+      StorageKeys.savedElapsedSeconds,
+      elapsed.value.inSeconds,
+    );
+    await _storage.remove(StorageKeys.savedStartTime);
   }
 
   void reset() async {
@@ -56,16 +60,15 @@ class MainPageController extends BaseController {
           showError("1 Dakikadan az çalışma süreleri kayıt edilmez!");
         }
       } else if (isConfirm == false) {
-        print("Hayır");
       } else {
-        print("Kullanıcı hiçbir şey yapmadı");
         return;
       }
-
-      await _storage.remove(StorageKeys.savedStartTime);
-      stop();
-      elapsed.value = Duration.zero;
     }
+
+    await _storage.remove(StorageKeys.savedStartTime);
+    await _storage.remove(StorageKeys.savedElapsedSeconds);
+    stop();
+    elapsed.value = Duration.zero;
   }
 
   @override
@@ -81,18 +84,25 @@ class MainPageController extends BaseController {
     _authService = Get.find<AuthService>();
     _homeController = Get.find<HomeController>();
     _storage = Get.find<StorageService>();
+
     String? savedTimeString = _storage.getValue(StorageKeys.savedStartTime);
+    int? savedElapsedSeconds = _storage.getValue(
+      StorageKeys.savedElapsedSeconds,
+    );
+
     if (savedTimeString != null) {
       final now = DateTime.now();
       DateTime startTime = DateTime.parse(savedTimeString);
       elapsed.value = now.difference(startTime);
       isRunning.value = true;
       _startTime = startTime;
-
       _timer = Timer.periodic(const Duration(seconds: 1), (_) {
         final now = DateTime.now();
         elapsed.value = now.difference(_startTime!);
       });
+    } else if (savedElapsedSeconds != null) {
+      elapsed.value = Duration(seconds: savedElapsedSeconds);
+      isRunning.value = false;
     }
   }
 }

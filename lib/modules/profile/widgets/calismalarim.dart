@@ -19,7 +19,7 @@ class CalismalarimButonu extends StatelessWidget {
       ),
       title: const Text("Çalışmalarım"),
       onTap: () {
-        Get.toNamed(AppRoutes.TIME); // ya da senin çalışmalar sayfanın route'u
+        Get.toNamed(AppRoutes.TIME);
       },
     );
   }

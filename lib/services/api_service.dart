@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 
 abstract class ApiConstants {
-  static const baseUrl = "http://91.232.103.21:8080";
+  static const baseUrl = "https://leventergoren.com.tr";
   static const login = "/authenticate";
   static const register = "/register";
   static const refreshToken = "/refreshToken";
@@ -57,12 +57,6 @@ class ApiService extends GetxService {
           }
 
           return handler.next(options);
-
-          // final token = _storageService.getValue<String>(StorageKeys.token);
-          // if (token != null) {
-          //   options.headers["Authorization"] = "Bearer $token";
-          // }
-          // return handler.next(options);
         },
 
         onError: (error, handler) async {
@@ -85,43 +79,12 @@ class ApiService extends GetxService {
             } else {
               Get.find<AuthService>().signOut();
               Get.toNamed(AppRoutes.LOGIN);
-              
+
               return handler.reject(error);
             }
           }
           return handler.next(error);
         },
-
-        // onError: (error, handler) async {
-        //   // if (error.response!.statusCode == 401) {
-        //   //   final _authService = Get.find<AuthService>();
-        //   //   final isRefreshed = await _authService.refreshToken();
-
-        //   //   if (isRefreshed) {
-        //   //     final newToken = _storageService.getValue<String>(
-        //   //       StorageKeys.token,
-        //   //     );
-        //   //     error.requestOptions.headers["Authorization"] =
-        //   //         "Bearer $newToken";
-
-        //   //     final clonedRequest = await _dio.fetch(error.requestOptions);
-        //   //     return handler.resolve(clonedRequest);
-        //   //   } else {
-        //   //     final _authService = Get.find<AuthService>();
-        //   //     await _authService.clearTokenAndRefreshToken();
-
-        //   //     Get.offAllNamed("/login");
-
-        //   //     return handler.reject(error);
-        //   //   }
-        //   // }
-
-        //   return handler.next(error);
-        //   // if (error.response!.statusCode == 401) {
-        //   //   await _storageService.remove(StorageKeys.token);
-        //   // }
-        //   // return handler.next(error);
-        // },
       ),
     );
     return this;
@@ -138,7 +101,6 @@ class ApiService extends GetxService {
       );
 
       if (response.statusCode == 200) {
-        print("REFRESH TOKEN ALINIYOR");
         Tokens tokens = Tokens.fromJson(response.data);
         await _storageService.setValue<String>(
           StorageKeys.token,
@@ -148,18 +110,15 @@ class ApiService extends GetxService {
           StorageKeys.refreshToken,
           tokens.refreshToken,
         );
-        print("REFRESH TOKEN ALINDI");
         return true;
       }
       return false;
-    } on DioException catch (e) {
-      print("Refresh tokenın süresi dolmuştur");
+    } on DioException catch (_) {
       await _storageService.remove(StorageKeys.token);
       await _storageService.remove(StorageKeys.refreshToken);
       Get.toNamed(AppRoutes.LOGIN);
       return false;
     } catch (e) {
-      print("Refresh tokenda bilinmeyen bir hata oluştu");
       await _storageService.remove(StorageKeys.token);
       await _storageService.remove(StorageKeys.refreshToken);
       Get.toNamed(AppRoutes.LOGIN);
@@ -181,7 +140,6 @@ class ApiService extends GetxService {
         data: data,
       );
     } catch (e) {
-      print("Dio get error $e");
       rethrow;
     }
   }
@@ -200,7 +158,6 @@ class ApiService extends GetxService {
         options: options,
       );
     } catch (e) {
-      print("Dio post hatası $e");
       rethrow;
     }
   }
@@ -219,7 +176,6 @@ class ApiService extends GetxService {
         options: options,
       );
     } catch (e) {
-      print("Dio put hatası $e");
       rethrow;
     }
   }
@@ -238,7 +194,6 @@ class ApiService extends GetxService {
         options: options,
       );
     } catch (e) {
-      print("Dio silme hatası $e");
       rethrow;
     }
   }

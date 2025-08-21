@@ -30,7 +30,7 @@ class ProfilKart extends GetView<ProfileController> {
             ),
             const SizedBox(height: 12),
             Text(
-              "${controller.user.value!.firstname}  ${controller.user.value!.lastname}", // Dinamik kullanıcı adı
+              "${controller.user.value!.firstname}  ${controller.user.value!.lastname}",
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),

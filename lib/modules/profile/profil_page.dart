@@ -15,7 +15,6 @@ class ProfilePage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final isLoading = controller.isLoading;
-      final user = controller.user.value;
       return isLoading
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -23,12 +22,10 @@ class ProfilePage extends GetView<ProfileController> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
-                    // Profil Kartı: avatar + isim
                     ProfilKart(),
 
                     const SizedBox(height: 24),
 
-                    // E-posta ve Kayıt Tarihi (karanlık tema seçeneğinin üstünde)
                     EpostaVeKayitTarihi(),
 
                     const SizedBox(height: 32),
@@ -41,12 +38,10 @@ class ProfilePage extends GetView<ProfileController> {
 
                     const Divider(height: 32),
 
-                    // Tema Değiştir
                     TemaDegistir(),
 
                     const Divider(height: 32),
 
-                    // Çıkış Yap
                     CikisYap(),
                   ],
                 ),

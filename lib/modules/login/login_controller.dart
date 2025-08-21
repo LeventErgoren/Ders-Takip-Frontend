@@ -10,6 +10,7 @@ class LoginController extends BaseController {
   final kullaniciAdi = "".obs;
   final sifre = "".obs;
   final key = GlobalKey<FormState>();
+  final isPasswordHidden = false.obs;
 
   String? usernameValidator(String? value) {
     if (value == null || value.isEmpty) {
@@ -37,19 +38,23 @@ class LoginController extends BaseController {
     if (key.currentState!.validate()) {
       key.currentState!.save();
 
-      AuthService _service = Get.find<AuthService>();
+      AuthService service = Get.find<AuthService>();
       LoginRequest user = LoginRequest(
         username: kullaniciAdi.value,
         password: sifre.value,
       );
 
-      if (await _service.login(user)) {
+      if (await service.login(user)) {
         Get.offAllNamed(AppRoutes.HOME);
         Get.find<ApiService>().inApp = true;
         showSuccess("Giriş başarılı!");
       } else {
-        showError(_service.errorMessage.value);
+        showError(service.errorMessage.value);
       }
     }
+  }
+
+  void togglePasswordVisibility() {
+    isPasswordHidden.value = !isPasswordHidden.value;
   }
 }

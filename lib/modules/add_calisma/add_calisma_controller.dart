@@ -37,6 +37,7 @@ class AddCalismaController extends BaseController {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final DateTime? picked = await showDatePicker(
+      locale: const Locale('tr', "TR"),
       context: context,
       initialDate: selectedDate.value,
       firstDate: DateTime.now().subtract(const Duration(days: 30)),

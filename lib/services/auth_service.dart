@@ -7,7 +7,6 @@ import 'package:ders_app/modules/routes/app_pages.dart';
 import 'package:ders_app/services/api_service.dart';
 import 'package:ders_app/services/storage_service.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
@@ -67,8 +66,6 @@ class AuthService extends GetxService {
         await _storageService.setValue(StorageKeys.token, token);
         await _storageService.setValue(StorageKeys.refreshToken, refreshToken);
 
-        debugPrint(token);
-
         int idFromToken = _getIdFromToken();
         userId.value = idFromToken;
         errorMessage.value = "";
@@ -98,7 +95,6 @@ class AuthService extends GetxService {
       errorMessage.value = e.response!.data["exception"];
       return false;
     } catch (e) {
-      print("Profil getirilirken bilinmeyen bir hata oluştu $e");
       return false;
     }
   }
@@ -116,7 +112,6 @@ class AuthService extends GetxService {
       currentUser.value = null;
       return null;
     } catch (e) {
-      print("Profil getirilirken bir hata oluştu $e");
       return null;
     }
   }
@@ -126,9 +121,7 @@ class AuthService extends GetxService {
       await clearUserDetails();
       Get.find<ApiService>().inApp = false;
       Get.toNamed(AppRoutes.LOGIN);
-    } catch (e) {
-      print("Çıkış yapılırken hata çıktı $e");
-    }
+    } catch (_) {}
   }
 
   int _getIdFromToken() {
@@ -169,12 +162,9 @@ class AuthService extends GetxService {
         return;
       }
       await clearUserDetails();
-    } on DioException catch (e) {
-      print("TOKEN SÜRESİ DOLMUŞTUR!!!!!!!!!!!");
+    } on DioException catch (_) {
       await tryRefreshToken(refreshToken);
-    } catch (e) {
-      print("BAŞKA BİR HATA VAR");
-    }
+    } catch (_) {}
   }
 
   Future<void> clearUserDetails() async {
@@ -192,7 +182,6 @@ class AuthService extends GetxService {
       );
 
       if (response.statusCode == 200) {
-        print("REFRESH TOKEN ALINIYOR");
         Tokens tokens = Tokens.fromJson(response.data);
         await _storageService.setValue<String>(
           StorageKeys.token,
@@ -202,15 +191,12 @@ class AuthService extends GetxService {
           StorageKeys.refreshToken,
           tokens.refreshToken,
         );
-        print("REFRESH TOKEN ALINDI");
         Get.toNamed(AppRoutes.HOME);
       }
-    } on DioException catch (e) {
-      print("Refresh tokenın süresi dolmuştur");
+    } on DioException catch (_) {
       await clearUserDetails();
       Get.toNamed(AppRoutes.LOGIN);
     } catch (e) {
-      print("Refresh tokenda bilinmeyen bir hata oluştu");
       Get.toNamed(AppRoutes.LOGIN);
     }
   }

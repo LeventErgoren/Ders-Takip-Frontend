@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 class AppBindings extends Bindings {
   @override
   Future<void> dependencies() async {
-    Get.put(ConnectivityService(),permanent: true);
+    Get.put(ConnectivityService(), permanent: true);
 
     await Get.putAsync<StorageService>(() async {
       final service = StorageService();

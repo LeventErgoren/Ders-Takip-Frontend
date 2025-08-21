@@ -36,12 +36,18 @@ class StatisticsController extends BaseController {
 
   bugunkuVeriler() {
     final now = DateTime.now();
+    final bugununBaslangici = DateTime(now.year, now.month, now.day);
+    final bugununSonu = DateTime(now.year, now.month, now.day, 23, 59, 59);
+
     istenilenVeri.value = orijinalVeri
         .where(
           (v) =>
-              v.creationDate.year == now.year &&
-              v.creationDate.month == now.month &&
-              v.creationDate.day == now.day,
+              v.creationDate.isAfter(
+                bugununBaslangici.subtract(const Duration(seconds: 1)),
+              ) &&
+              v.creationDate.isBefore(
+                bugununSonu.add(const Duration(seconds: 1)),
+              ),
         )
         .toList();
     calismaSuresiHesapla();
@@ -49,13 +55,27 @@ class StatisticsController extends BaseController {
 
   buHaftaninVerileri() {
     final now = DateTime.now();
-    final monday = now.subtract(Duration(days: now.weekday - 1));
+    final daysFromMonday = now.weekday - 1;
+    final monday = now.subtract(Duration(days: daysFromMonday));
     final startOfMonday = DateTime(monday.year, monday.month, monday.day);
+    final endOfSunday = DateTime(
+      monday.year,
+      monday.month,
+      monday.day + 6,
+      23,
+      59,
+      59,
+    );
+
     istenilenVeri.value = orijinalVeri
         .where(
-          (v) => v.creationDate.isAfter(
-            startOfMonday.subtract(const Duration(seconds: 1)),
-          ),
+          (v) =>
+              v.creationDate.isAfter(
+                startOfMonday.subtract(const Duration(seconds: 1)),
+              ) &&
+              v.creationDate.isBefore(
+                endOfSunday.add(const Duration(seconds: 1)),
+              ),
         )
         .toList();
     calismaSuresiHesapla();
@@ -64,7 +84,7 @@ class StatisticsController extends BaseController {
   buAyinVerileri() {
     final now = DateTime.now();
     final startOfMonth = DateTime(now.year, now.month, 1);
-    final endOfMonth = DateTime(now.year, now.month + 1, 0); // ayın son günü
+    final endOfMonth = DateTime(now.year, now.month + 1, 0, 23, 59, 59);
 
     final ayVerileri = orijinalVeri
         .where(
@@ -72,7 +92,9 @@ class StatisticsController extends BaseController {
               v.creationDate.isAfter(
                 startOfMonth.subtract(const Duration(seconds: 1)),
               ) &&
-              v.creationDate.isBefore(endOfMonth.add(const Duration(days: 1))),
+              v.creationDate.isBefore(
+                endOfMonth.add(const Duration(seconds: 1)),
+              ),
         )
         .toList();
 
@@ -92,11 +114,17 @@ class StatisticsController extends BaseController {
   buYilinVerileri() {
     final now = DateTime.now();
     final startOfYear = DateTime(now.year, 1, 1);
+    final endOfYear = DateTime(now.year, 12, 31, 23, 59, 59);
+
     istenilenVeri.value = orijinalVeri
         .where(
-          (v) => v.creationDate.isAfter(
-            startOfYear.subtract(const Duration(seconds: 1)),
-          ),
+          (v) =>
+              v.creationDate.isAfter(
+                startOfYear.subtract(const Duration(seconds: 1)),
+              ) &&
+              v.creationDate.isBefore(
+                endOfYear.add(const Duration(seconds: 1)),
+              ),
         )
         .toList();
     calismaSuresiHesapla();
@@ -169,7 +197,7 @@ class StatisticsController extends BaseController {
     final max = barGroups
         .map((e) => e.barRods[0].toY)
         .reduce((a, b) => a > b ? a : b);
-    return max <= 0.1 ? 10 : max + (max * 0.1); // %10 marj
+    return max <= 0.1 ? 10 : max + (max * 0.1);
   }
 
   List<List<CalismaSuresi>> aylikVeriyi4HaftayaGrupla(
@@ -187,7 +215,7 @@ class StatisticsController extends BaseController {
       } else if (gun <= 21) {
         haftalikVeriler[2].add(veri);
       } else {
-        haftalikVeriler[3].add(veri); // 22 ve sonrası 4. hafta
+        haftalikVeriler[3].add(veri);
       }
     }
 
@@ -196,7 +224,7 @@ class StatisticsController extends BaseController {
 
   void calismaSuresiHesapla() {
     toplamCalismaSuresi.value = 0;
-    for (var c in istenilenVeri.value) {
+    for (var c in istenilenVeri) {
       toplamCalismaSuresi.value += c.dakika;
     }
   }
