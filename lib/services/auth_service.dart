@@ -146,7 +146,7 @@ class AuthService extends GetxService {
 
     if (token == null || refreshToken == null) {
       await clearUserDetails();
-      Get.toNamed(AppRoutes.LOGIN);
+      Get.offAllNamed(AppRoutes.LOGIN);
       return;
     }
 
@@ -157,7 +157,7 @@ class AuthService extends GetxService {
       );
 
       if (response.statusCode == 200) {
-        Get.toNamed(AppRoutes.HOME);
+        Get.offAllNamed(AppRoutes.HOME);
         Get.find<ApiService>().inApp = true;
         return;
       }
@@ -195,9 +195,9 @@ class AuthService extends GetxService {
       }
     } on DioException catch (_) {
       await clearUserDetails();
-      Get.toNamed(AppRoutes.LOGIN);
+      Get.offAllNamed(AppRoutes.LOGIN);
     } catch (e) {
-      Get.toNamed(AppRoutes.LOGIN);
+      Get.offAllNamed(AppRoutes.LOGIN);
     }
   }
 

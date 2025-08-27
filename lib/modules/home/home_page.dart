@@ -18,7 +18,7 @@ class HomePage extends GetView<HomeController> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBarWidget(),
       appBar: AppBar(
-        title: Text("Uygulama"),
+        title: Text("Ders Takip"),
         centerTitle: true,
         leading: Obx(
           () => controller.activeIndex.value == 0

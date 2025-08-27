@@ -38,7 +38,7 @@ class LoginForm extends GetView<LoginController> {
             style: TextStyle(color: theme.colorScheme.onSurface),
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              hintText: "kullanici123",
+              hintText: "Kullanıcı Adı",
               prefixIcon: Icon(
                 Icons.person_outline,
                 color: theme.colorScheme.onSurface,
@@ -69,7 +69,7 @@ class LoginForm extends GetView<LoginController> {
             obscureText: true,
             style: TextStyle(color: theme.colorScheme.onSurface),
             decoration: InputDecoration(
-              hintText: "••••••••",
+              hintText: "Şifre",
               prefixIcon: Icon(
                 Icons.lock_outline,
                 color: theme.colorScheme.onSurface,
@@ -89,7 +89,9 @@ class LoginForm extends GetView<LoginController> {
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                controller.sifreUnuttum();
+              },
               style: TextButton.styleFrom(
                 foregroundColor: theme.colorScheme.secondary,
                 textStyle: const TextStyle(fontWeight: FontWeight.w600),
