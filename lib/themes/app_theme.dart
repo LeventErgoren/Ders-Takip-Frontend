@@ -11,15 +11,12 @@ class AppTheme {
     );
 
     return base.copyWith(
-      useMaterial3: true,
       scaffoldBackgroundColor: AppColors.backgroundLight,
       colorScheme: const ColorScheme.light(
         primary: AppColors.primaryLight,
         onPrimary: Colors.white,
         secondary: AppColors.accentLight,
         onSecondary: Colors.white,
-        background: AppColors.backgroundLight,
-        onBackground: AppColors.textPrimaryLight,
         surface: AppColors.surfaceLight,
         onSurface: AppColors.textPrimaryLight,
         error: Colors.red,
@@ -41,12 +38,12 @@ class AppTheme {
         filled: false,
         border: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: AppColors.primaryLight.withOpacity(0.4),
+            color: AppColors.primaryLight.withValues(alpha: 0.4),
           ),
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: AppColors.primaryLight.withOpacity(0.4),
+            color: AppColors.primaryLight.withValues(alpha: 0.4),
           ),
         ),
         focusedBorder: UnderlineInputBorder(
@@ -99,15 +96,12 @@ class AppTheme {
     );
 
     return base.copyWith(
-      useMaterial3: true,
       scaffoldBackgroundColor: AppColors.backgroundDark,
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryDark,
         onPrimary: Colors.white,
         secondary: AppColors.accentDark,
         onSecondary: Colors.white,
-        background: AppColors.backgroundDark,
-        onBackground: AppColors.textPrimaryDark,
         surface: AppColors.surfaceDark,
         onSurface: AppColors.textPrimaryDark,
         error: Colors.red,
@@ -128,10 +122,10 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: false,
         border: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.4)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.4)),
         ),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.4)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.4)),
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.accentDark, width: 1.5),

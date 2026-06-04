@@ -17,7 +17,7 @@ class EpostaVeKayitTarihi extends GetView<ProfileController> {
               Icon(
                 Icons.email_outlined,
                 size: 18,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
               const SizedBox(width: 8),
               Text(
@@ -25,7 +25,7 @@ class EpostaVeKayitTarihi extends GetView<ProfileController> {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurface.withOpacity(0.7),
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
               ),
             ],
@@ -37,7 +37,7 @@ class EpostaVeKayitTarihi extends GetView<ProfileController> {
               Icon(
                 Icons.calendar_today_outlined,
                 size: 18,
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
               const SizedBox(width: 8),
               Text(
@@ -45,7 +45,7 @@ class EpostaVeKayitTarihi extends GetView<ProfileController> {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurface.withOpacity(0.7),
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
               ),
             ],

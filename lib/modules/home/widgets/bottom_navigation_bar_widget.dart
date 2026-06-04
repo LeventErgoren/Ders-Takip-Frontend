@@ -27,7 +27,7 @@ class BottomNavigationBarWidget extends GetView<HomeController> {
         leftCornerRadius: 24,
         rightCornerRadius: 24,
         backgroundColor: bgColor,
-        splashColor: activeColor.withOpacity(0.1),
+        splashColor: activeColor.withValues(alpha: 0.1),
         splashSpeedInMilliseconds: 250,
         elevation: 8,
         tabBuilder: (index, isActive) {

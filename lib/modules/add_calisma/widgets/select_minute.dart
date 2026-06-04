@@ -29,7 +29,7 @@ class SelectMinute extends GetView<AddCalismaController> {
           filled: true,
           fillColor: bgColor,
           labelText: 'Kaç dakika?',
-          labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
+          labelStyle: TextStyle(color: textColor.withValues(alpha: 0.7)),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: borderColor),
             borderRadius: BorderRadius.circular(16),

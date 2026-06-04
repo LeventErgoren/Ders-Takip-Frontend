@@ -10,9 +10,9 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
     colors: [
       isDarkMode ? AppColors.accentDark : AppColors.accentLight,
       isDarkMode
-          ? AppColors.accentDark.withOpacity(0.5)
-          : AppColors.accentLight.withOpacity(0.5),
-      Colors.white.withOpacity(isDarkMode ? 0.3 : 0.9),
+          ? AppColors.accentDark.withValues(alpha: 0.5)
+          : AppColors.accentLight.withValues(alpha: 0.5),
+      Colors.white.withValues(alpha: isDarkMode ? 0.3 : 0.9),
     ],
     stops: [0.0, 0.5, 1.0],
     begin: Alignment.topCenter,
@@ -21,11 +21,11 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
   final zeroGradient = LinearGradient(
     colors: [
       isDarkMode
-          ? AppColors.textSecondaryDark.withOpacity(0.6)
-          : AppColors.textSecondaryLight.withOpacity(0.6),
+          ? AppColors.textSecondaryDark.withValues(alpha: 0.6)
+          : AppColors.textSecondaryLight.withValues(alpha: 0.6),
       isDarkMode
-          ? AppColors.textSecondaryDark.withOpacity(0.4)
-          : AppColors.textSecondaryLight.withOpacity(0.4),
+          ? AppColors.textSecondaryDark.withValues(alpha: 0.4)
+          : AppColors.textSecondaryLight.withValues(alpha: 0.4),
     ],
     stops: [0.0, 1.0],
     begin: Alignment.topCenter,
@@ -48,8 +48,8 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
                     show: true,
                     toY: 0.1,
                     color: isDarkMode
-                        ? AppColors.textSecondaryDark.withOpacity(0.5)
-                        : AppColors.textSecondaryLight.withOpacity(0.5),
+                        ? AppColors.textSecondaryDark.withValues(alpha: 0.5)
+                        : AppColors.textSecondaryLight.withValues(alpha: 0.5),
                   )
                 : null,
           ),
@@ -87,8 +87,8 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
                     show: true,
                     toY: 0.1,
                     color: isDarkMode
-                        ? AppColors.textSecondaryDark.withOpacity(0.5)
-                        : AppColors.textSecondaryLight.withOpacity(0.5),
+                        ? AppColors.textSecondaryDark.withValues(alpha: 0.5)
+                        : AppColors.textSecondaryLight.withValues(alpha: 0.5),
                   )
                 : null,
           ),
@@ -118,8 +118,8 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
                     show: true,
                     toY: 0.1,
                     color: isDarkMode
-                        ? AppColors.textSecondaryDark.withOpacity(0.5)
-                        : AppColors.textSecondaryLight.withOpacity(0.5),
+                        ? AppColors.textSecondaryDark.withValues(alpha: 0.5)
+                        : AppColors.textSecondaryLight.withValues(alpha: 0.5),
                   )
                 : null,
           ),
@@ -159,8 +159,8 @@ List<BarChartGroupData> getBarGroups(BuildContext context, dynamic controller) {
                     show: true,
                     toY: 0.1,
                     color: isDarkMode
-                        ? AppColors.textSecondaryDark.withOpacity(0.5)
-                        : AppColors.textSecondaryLight.withOpacity(0.5),
+                        ? AppColors.textSecondaryDark.withValues(alpha: 0.5)
+                        : AppColors.textSecondaryLight.withValues(alpha: 0.5),
                   )
                 : null,
           ),

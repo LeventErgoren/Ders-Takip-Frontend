@@ -66,7 +66,7 @@ class CustomDrawer extends GetView<HomeController> {
               title: Text(
                 "İstatistikler",
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onBackground,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               onTap: () {
@@ -81,7 +81,7 @@ class CustomDrawer extends GetView<HomeController> {
               title: Text(
                 "Çalışmalarım",
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onBackground,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               onTap: () {

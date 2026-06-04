@@ -4,7 +4,7 @@ import 'package:ders_app/models/calisma_suresi_time.dart';
 import 'package:ders_app/repositories/calisma_suresi_repository.dart';
 import 'package:ders_app/services/auth_service.dart';
 import 'package:ders_app/themes/app_colors.dart';
-import 'package:fl_chart/src/chart/bar_chart/bar_chart_data.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/instance_manager.dart';

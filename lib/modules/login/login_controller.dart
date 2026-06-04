@@ -3,7 +3,6 @@ import 'package:ders_app/models/login_request.dart';
 import 'package:ders_app/modules/routes/app_pages.dart';
 import 'package:ders_app/services/api_service.dart';
 import 'package:ders_app/services/auth_service.dart';
-import 'package:ders_app/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
