@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 
 abstract class ApiConstants {
-  static const baseUrl = "http://localhost:8080";
+  static const baseUrl = "http://10.0.2.2:8080";
   static const login = "/authenticate";
   static const register = "/register";
   static const refreshToken = "/refreshToken";
